@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Reforma tributária no agro: IBS e CBS para o produtor rural, com simuladores de crédito, enquadramento, investimentos, capital de giro, painel de alertas e insumos.">
+<title>Reforma Tributária no Agro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+/* Layout: guia de leitura em blocos (como a apresentação) com simuladores encaixados no texto; tributos antigos em âmbar, novos em verde; seção final de gestão da fazenda com ferramentas. */
+:root{
+  --bg:#f2f4ee; --surface:#fbfcf8; --ink:#16201a; --ink-2:#4a564d; --muted:#7a857c; --line:#dce1d6; --axis:#c4cabe;
+  --accent:#1d6a3b; --accent-soft:#e1eee4; --accent-ink:#ffffff;
+  --old:#a8680f; --old-soft:#f6ead6; --gone:#9b3b2f; --gone-soft:#f6e3df;
+  --good:#1a7a2e; --good-bg:#e2f2e3; --warn:#8f6400; --warn-bg:#fbf0d2; --bad:#b4332a; --bad-bg:#f9e2df; --info-bg:#e6edf3; --info:#2f5878;
+  --input-bg:#fff8dc; --input-line:#e2cf7c;
+  --f-display:"Sora","Segoe UI",system-ui,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,-apple-system,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1511; --surface:#161e18; --ink:#eaf0ea; --ink-2:#b9c4ba; --muted:#859087; --line:#28322b; --axis:#3a453d;
+  --accent:#6cc98a; --accent-soft:#1a2e21; --accent-ink:#0f1511;
+  --old:#e3a64a; --old-soft:#33280f; --gone:#ec8b7d; --gone-soft:#3a1d18;
+  --good:#6cd17d; --good-bg:#15301b; --warn:#f0c35a; --warn-bg:#33290f; --bad:#f08a80; --bad-bg:#3a1a17; --info-bg:#172634; --info:#9cc3e3;
+  --input-bg:#2b2812; --input-line:#5c5122; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1511; --surface:#161e18; --ink:#eaf0ea; --ink-2:#b9c4ba; --muted:#859087; --line:#28322b; --axis:#3a453d;
+  --accent:#6cc98a; --accent-soft:#1a2e21; --accent-ink:#0f1511;
+  --old:#e3a64a; --old-soft:#33280f; --gone:#ec8b7d; --gone-soft:#3a1d18;
+  --good:#6cd17d; --good-bg:#15301b; --warn:#f0c35a; --warn-bg:#33290f; --bad:#f08a80; --bad-bg:#3a1a17; --info-bg:#172634; --info:#9cc3e3;
+  --input-bg:#2b2812; --input-line:#5c5122; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1140px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(2.1rem,5vw,3.5rem);font-weight:800;letter-spacing:-.025em}
+h2{font-size:clamp(1.5rem,3vw,2.05rem);font-weight:700;letter-spacing:-.015em}
+h3{font-size:1.12rem;font-weight:700}
+p{margin:0;max-width:68ch}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.num,.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.law{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.note{font-size:.86rem;color:var(--muted);max-width:none}
+
+/* navegação */
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:8px max(16px,env(safe-area-inset-left,0px));overflow-x:auto;scrollbar-width:none}
+nav.top::-webkit-scrollbar{display:none}
+nav.top .in{max-width:1140px;margin:0 auto;display:flex;gap:4px;align-items:center;white-space:nowrap}
+nav.top .brand{font-family:var(--f-display);font-weight:800;font-size:.98rem;color:var(--ink);text-decoration:none;margin-right:10px}
+nav.top .brand span{color:var(--accent)}
+nav.top a.l{font-size:.88rem;color:var(--ink-2);text-decoration:none;padding:5px 10px;border-radius:999px}
+nav.top a.l:hover{background:var(--accent-soft);color:var(--accent)}
+nav.top a.l.g{font-weight:700;color:var(--accent);border:1px solid var(--accent)}
+
+/* abertura */
+header.hero{padding-block:44px 30px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:36px;align-items:end}
+.hero .lede{font-size:1.18rem;color:var(--ink-2);margin-top:14px}
+.hero .bases{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.chip{display:inline-flex;align-self:start;justify-self:start;align-items:center;gap:6px;font-size:.8rem;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.chip.o{background:var(--old-soft);color:var(--old)} .chip.x{background:var(--gone-soft);color:var(--gone)} .chip.n{background:var(--line);color:var(--ink-2)}
+.ratecard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:14px}
+.stack{display:flex;height:42px;border-radius:6px;overflow:hidden;gap:2px}
+.stack span{display:grid;place-items:center;font-size:.78rem;font-weight:700;color:#fff;font-family:var(--f-mono);white-space:nowrap;overflow:hidden}
+.s-cbs{background:#1d4d2f} .s-ibe{background:#2e8a4f} .s-ibm{background:#8fbf3a;color:#16201a!important}
+.big{font-family:var(--f-display);font-weight:800;font-size:3.4rem;line-height:1;color:var(--accent);letter-spacing:-.03em}
+.rrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--ink-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+section{padding-block:52px 8px;display:grid;gap:22px;scroll-margin-top:60px}
+section .head{display:grid;gap:8px}
+section .head p{color:var(--ink-2)}
+.blk{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:grid;gap:12px;min-width:0}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.g5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+thead th{font-size:.78rem;color:var(--ink-2);font-weight:600;border-bottom:1px solid var(--axis);white-space:nowrap}
+td.n,th.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.quote{font-family:var(--f-display);font-weight:700;font-size:clamp(1.25rem,2.6vw,1.7rem);line-height:1.25;padding:22px 24px;border-radius:10px;background:var(--accent);color:var(--accent-ink)}
+.quote span{display:block;font-family:var(--f-body);font-weight:500;font-size:.95rem;opacity:.85;margin-top:8px}
+ul.clean{margin:0;padding-left:18px;display:grid;gap:4px}
+ul.clean li{color:var(--ink-2)}
+.ok li::marker{color:var(--good)}
+
+/* linha do tempo */
+.years{display:flex;flex-wrap:wrap;gap:6px}
+.years button,.seg button,.btn{font:inherit;font-size:.88rem;padding:6px 12px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.years button[aria-pressed="true"],.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn:hover{border-color:var(--accent)}
+table.tl td,table.tl th{text-align:center;font-size:.8rem;padding:6px 4px;min-width:84px}
+table.tl td:first-child,table.tl th:first-child{text-align:left;font-weight:700;min-width:70px}
+table.tl .cur{outline:2px solid var(--accent);outline-offset:-2px}
+.st{display:block;border-radius:5px;padding:5px 4px;font-weight:600;line-height:1.2}
+.st-same{background:var(--line);color:var(--ink-2)} .st-old{background:var(--old-soft);color:var(--old)} .st-end{background:var(--gone-soft);color:var(--gone)}
+.st-new{background:var(--accent-soft);color:var(--accent)} .st-none{color:var(--muted)}
+.ystat{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.ystat div{padding:10px 12px;border-radius:8px;background:var(--bg);display:grid;gap:2px}
+.ystat b{font-family:var(--f-display);font-size:1rem}
+.ystat span{font-size:.82rem;color:var(--ink-2)}
+
+/* simuladores */
+.sim{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:22px;align-items:start}
+.fields{display:grid;gap:10px}
+.field{display:grid;grid-template-columns:minmax(0,1fr) 9.5rem;gap:10px;align-items:center}
+.field label{font-size:.92rem;line-height:1.3}
+.field small{display:block;color:var(--muted);font-size:.78rem}
+.field input,.field select{width:100%;font-family:var(--f-mono);font-size:.9rem;text-align:right;padding:6px 8px;border-radius:5px;border:1px solid var(--input-line);background:var(--input-bg);color:var(--ink)}
+.field select{text-align:left;font-family:var(--f-body)}
+.chk{display:flex;gap:8px;align-items:center;font-size:.92rem}
+.out{display:grid;gap:10px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{padding:12px 14px;border-radius:8px;background:var(--bg);display:grid;gap:2px}
+.kpi .v{font-family:var(--f-mono);font-weight:600;font-size:1.1rem;font-variant-numeric:tabular-nums}
+.kpi .k{font-size:.8rem;color:var(--ink-2);line-height:1.3}
+.kpi.hl{background:var(--accent);color:var(--accent-ink)} .kpi.hl .k{color:var(--accent-ink);opacity:.85}
+.kpi.w{background:var(--warn-bg)} .kpi.w .v{color:var(--warn)}
+.kpi.b{background:var(--bad-bg)} .kpi.b .v{color:var(--bad)}
+.verdict{padding:12px 14px;border-radius:8px;font-weight:600;border:1px solid}
+.verdict.ok{background:var(--good-bg);color:var(--good);border-color:var(--good)}
+.verdict.w{background:var(--warn-bg);color:var(--warn);border-color:var(--warn)}
+.verdict.b{background:var(--bad-bg);color:var(--bad);border-color:var(--bad)}
+.verdict p{font-weight:400;color:var(--ink);font-size:.92rem;margin-top:4px}
+.steps4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.st4{padding:12px;border-radius:8px;background:var(--bg);display:grid;gap:4px;align-content:start}
+.st4 .t{font-size:.76rem;font-family:var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.st4 .v{font-family:var(--f-mono);font-weight:600;font-size:1rem}
+.st4.cr{background:var(--good-bg)} .st4.cr .v{color:var(--good)}
+.st4.db{background:var(--bad-bg)} .st4.db .v{color:var(--bad)}
+.st4.tot{background:var(--accent);color:var(--accent-ink)} .st4.tot .t{color:var(--accent-ink);opacity:.8}
+.limbar{position:relative;height:16px;border-radius:8px;background:var(--line);overflow:visible;margin-top:22px}
+.limbar .fill{position:absolute;inset:0 auto 0 0;border-radius:8px;background:var(--accent)}
+.limbar .mk{position:absolute;top:-20px;bottom:-4px;width:2px;background:var(--ink)}
+.limbar .mk span{position:absolute;top:-2px;right:5px;font-size:.72rem;font-family:var(--f-mono);white-space:nowrap;color:var(--ink-2)}
+.cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.cmp .card h3{font-size:1rem}
+.cmp .res{font-family:var(--f-mono);font-weight:600;padding:8px 10px;border-radius:6px;background:var(--bg)}
+svg.chart{width:100%;height:auto;display:block;overflow:visible}
+svg.chart text{fill:var(--muted);font-family:var(--f-mono);font-size:11px}
+svg.chart .lbl{fill:var(--ink-2)}
+svg.chart .grid{stroke:var(--line)} svg.chart .base{stroke:var(--axis)}
+.pill{display:inline-block;font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.p-dif{background:var(--accent-soft);color:var(--accent)} .p-red{background:var(--info-bg);color:var(--info)} .p-esp{background:var(--warn-bg);color:var(--warn)}
+.p-cap{background:var(--old-soft);color:var(--old)} .p-ger{background:var(--line);color:var(--ink-2)}
+.ins input{width:8.5rem;font-family:var(--f-mono);font-size:.86rem;text-align:right;padding:5px 7px;border-radius:5px;border:1px solid var(--input-line);background:var(--input-bg);color:var(--ink)}
+.rank{display:grid;gap:8px}
+.rk{display:grid;grid-template-columns:minmax(0,12rem) minmax(0,1fr) 7.5rem;gap:10px;align-items:center;font-size:.86rem}
+.rk .bar{height:14px;border-radius:0 4px 4px 0;background:var(--accent)}
+.rk .n{font-family:var(--f-mono);text-align:right}
+
+/* painel */
+.alerts{display:grid;gap:8px}
+.al{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;padding:10px 12px;border-radius:8px;border-left:4px solid}
+.al.b{background:var(--bad-bg);border-color:var(--bad)} .al.w{background:var(--warn-bg);border-color:var(--warn)} .al.i{background:var(--info-bg);border-color:var(--info)} .al.ok{background:var(--good-bg);border-color:var(--good)}
+.al b{display:block;font-size:.92rem} .al p{font-size:.84rem;color:var(--ink-2)}
+.al .sv{font-family:var(--f-mono);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding-top:2px}
+.al.b .sv{color:var(--bad)} .al.w .sv{color:var(--warn)} .al.i .sv{color:var(--info)} .al.ok .sv{color:var(--good)}
+table.ops td{font-size:.86rem;vertical-align:middle}
+table.ops button{font:inherit;font-size:.78rem;padding:3px 8px;border-radius:5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.stt{font-size:.74rem;font-weight:700;padding:2px 8px;border-radius:999px}
+.stt.ok{background:var(--good-bg);color:var(--good)} .stt.pend{background:var(--warn-bg);color:var(--warn)} .stt.late{background:var(--bad-bg);color:var(--bad)}
+form.add{display:grid;grid-template-columns:repeat(6,minmax(0,1fr)) auto;gap:8px;align-items:end}
+form.add label{display:grid;gap:3px;font-size:.78rem;color:var(--ink-2)}
+form.add input,form.add select{font:inherit;font-size:.86rem;padding:6px 8px;border-radius:5px;border:1px solid var(--input-line);background:var(--input-bg);color:var(--ink);min-width:0;width:100%}
+
+.disc{border:1px dashed var(--axis);border-radius:10px;padding:14px 16px;font-size:.88rem;color:var(--ink-2)}
+footer{padding-block:40px 40px;margin-top:40px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted);display:grid;gap:8px}
+footer p{max-width:none}
+
+@media (max-width:960px){
+  header.hero,.sim,.g2,.cmp{grid-template-columns:minmax(0,1fr)}
+  .g3{grid-template-columns:minmax(0,1fr)}
+  .g5{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps4,.ystat{grid-template-columns:repeat(2,minmax(0,1fr))}
+  form.add{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  .g5{grid-template-columns:minmax(0,1fr)}
+  .field{grid-template-columns:minmax(0,1fr) 8rem}
+  .rk{grid-template-columns:minmax(0,1fr) 6.5rem}.rk .bar{grid-column:1/-1;order:3}
+  .big{font-size:2.8rem}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<nav class="top" aria-label="Seções"><div class="in">
+  <a class="brand" href="#inicio">Reforma <span>Agro</span></a>
+  <a class="l" href="#aliquotas">Alíquotas</a><a class="l" href="#transicao">Transição</a><a class="l" href="#agir">Agir agora</a>
+  <a class="l" href="#credito">Crédito</a><a class="l" href="#contribuinte">Contribuinte</a><a class="l" href="#insumos">Insumos</a>
+  <a class="l" href="#venda">Venda e contratos</a><a class="l" href="#exportacao">Exportação</a><a class="l g" href="#gestao">Gestão da fazenda</a>
+</div></nav>
+
+<header class="hero" id="inicio">
+  <div>
+    <div class="eyebrow">IBS · CBS · produtor rural</div>
+    <h1>Reforma tributária no agro</h1>
+    <p class="lede">O que muda para o produtor rural com o IBS e a CBS: alíquotas, transição até 2033, crédito, quem passa a ser contribuinte, insumos e diferimento, contratos de venda e exportação. Com simuladores para levar as regras para a conta da fazenda.</p>
+    <div class="bases"><span class="chip n">EC nº 132/2023</span><span class="chip n">LC nº 214/2025</span><span class="chip n">Decreto nº 12.955/2026</span></div>
+  </div>
+  <div class="ratecard" id="aliquotas" aria-labelledby="ratesT">
+    <div class="eyebrow" id="ratesT">Como se compõe a alíquota do agro</div>
+    <div><div class="legend" style="justify-content:space-between"><span><b>Alíquota geral: 28%</b></span><span class="note">referência da apresentação</span></div>
+      <div class="stack" role="img" aria-label="CBS 10%, IBS estadual 14%, IBS municipal 4%"><span class="s-cbs" style="flex:10">CBS 10%</span><span class="s-ibe" style="flex:14">IBS estadual 14%</span><span class="s-ibm" style="flex:4">4%</span></div></div>
+    <div class="rrow"><span class="big">11,2%</span><div><b>No agro</b><p class="note" style="color:var(--ink-2)">Mesma proporção da alíquota geral, com redução de 60%: CBS 4,0% + IBS estadual 5,6% + IBS municipal 1,6%.</p></div></div>
+    <div class="stack" style="width:40%" role="img" aria-label="CBS 4%, IBS estadual 5,6%, IBS municipal 1,6%"><span class="s-cbs" style="flex:4">4</span><span class="s-ibe" style="flex:5.6">5,6</span><span class="s-ibm" style="flex:1.6"></span></div>
+    <div class="legend"><span><i class="s-cbs"></i>CBS</span><span><i class="s-ibe"></i>IBS estadual</span><span><i class="s-ibm"></i>IBS municipal</span></div>
+    <p class="note">CBS em 2027: <b>4%</b> no agro (10% na alíquota geral). Alíquotas de referência, usadas como premissa nos exemplos.</p>
+  </div>
+</header>
+
+<!-- ================= TRANSIÇÃO ================= -->
+<section id="transicao">
+  <div class="head"><div class="blk">Calendário</div><h2>Período de transição, de 2026 a 2033</h2>
+    <p>ICMS e ISS saem aos poucos a partir de 2029. PIS e Cofins acabam em 2027, quando a CBS entra para valer. Escolha um ano para ver como cada tributo fica.</p></div>
+  <div class="card">
+    <div class="years" id="years" role="group" aria-label="Ano"></div>
+    <div class="ystat" id="ystat"></div>
+    <div class="tw"><table class="tl" id="tl"></table></div>
+    <div class="legend"><span><i style="background:var(--line)"></i>sem alteração</span><span><i style="background:var(--old-soft);outline:1px solid var(--old)"></i>reduzindo (% da alíquota atual)</span><span><i style="background:var(--gone-soft);outline:1px solid var(--gone)"></i>extinção</span><span><i style="background:var(--accent-soft);outline:1px solid var(--accent)"></i>tributo novo</span></div>
+    <p class="law">Elaboração da figura original: CNA, a partir da EC nº 132/2023 e da LC nº 214/2025.</p>
+  </div>
+</section>
+
+<!-- ================= AGIR AGORA ================= -->
+<section id="agir">
+  <div class="head"><div class="blk">Preparação</div><h2>Por que agir agora</h2></div>
+  <div class="g5">
+    <div class="card"><span class="chip" style="justify-self:start">Jurídico</span><ul class="clean"><li>Negociação e renegociação de contratos de longo prazo</li><li>Cláusulas de tributos e reajuste</li></ul></div>
+    <div class="card"><span class="chip" style="justify-self:start">Financeiro</span><ul class="clean"><li>Caixa para pagamento de tributos</li></ul></div>
+    <div class="card"><span class="chip" style="justify-self:start">Contabilidade</span><ul class="clean"><li>Capacidade técnica para atender as obrigações acessórias</li></ul></div>
+    <div class="card"><span class="chip" style="justify-self:start">TI</span><ul class="clean"><li>Sistemas de gestão</li></ul></div>
+    <div class="card"><span class="chip" style="justify-self:start">RH</span><ul class="clean"><li>Contratos com pessoas jurídicas</li><li>Benefícios aos funcionários (alimentação, vale, plano de saúde)</li></ul></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="blk">2027</div><h3>CNPJ do produtor rural</h3>
+      <p>A partir de 1º de janeiro de 2027 começa a exigência cadastral para os produtores pessoa física abrangidos. É uma identificação para a atividade.</p>
+      <p><b>Receber CNPJ não transforma o produtor em pessoa jurídica.</b></p>
+      <p class="law">Decreto nº 12.955/2026, art. 105, §§ 4º e 4º-A.</p></div>
+    <div class="card"><div class="blk">Tributação “por fora”</div><h3>Preço e tributo são grandezas distintas</h3>
+      <p>Preço da operação + IBS e CBS incidentes = valor financeiro total. O IBS e a CBS não integram a própria base de cálculo.</p>
+      <div class="steps4" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="st4"><span class="t">Produção</span><span class="v">R$ 100.000,00</span></div><div class="st4 db"><span class="t">IBS e CBS (4%)</span><span class="v">R$ 4.000,00</span></div><div class="st4 tot"><span class="t">Total da nota</span><span class="v">R$ 104.000,00</span></div></div>
+      <p class="law">LC nº 214/2025, art. 12, caput e § 2º, I. Simulação didática com tributação aproximada de 4%.</p></div>
+  </div>
+</section>
+
+<!-- ================= CRÉDITO ================= -->
+<section id="credito">
+  <div class="head"><div class="blk">Não cumulatividade</div><h2>O caminho do IBS e da CBS na fazenda</h2>
+    <p>O tributo pago nas compras vira crédito; o tributo das vendas é débito. O produtor recolhe a diferença. Mas o crédito só é liberado quando o fornecedor recebe e o débito dele é extinto.</p></div>
+  <div class="card sim">
+    <div class="fields">
+      <div class="field"><label for="ncC">Compra de insumos<small>valor sem tributo, R$</small></label><input id="ncC" type="number" min="0" step="100" value="10000"></div>
+      <div class="field"><label for="ncV">Venda da produção<small>valor sem tributo, R$</small></label><input id="ncV" type="number" min="0" step="100" value="50000"></div>
+      <div class="field"><label for="ncA">Alíquota IBS/CBS<small>% (exemplo dos slides: 10%)</small></label><input id="ncA" type="number" min="0" max="40" step="0.1" value="10"></div>
+      <label class="chk"><input id="ncP" type="checkbox" checked> O fornecedor dos insumos já foi pago (débito dele extinto)</label>
+      <p class="law">LC nº 214/2025, art. 47: crédito condicionado à extinção do débito.</p>
+    </div>
+    <div class="out">
+      <div class="steps4" id="ncSteps"></div>
+      <div class="verdict" id="ncMsg"></div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="quote">“Se não pagar… não tem crédito.” “O problema do outro… agora é seu.”<span>Antes, a nota fiscal liberava o crédito. Agora é preciso nota fiscal + pagamento ao fornecedor (art. 47).</span></div>
+    <div class="card"><div class="blk">Apuração assistida</div><h3>A conferência tem consequências jurídicas</h3>
+      <p><b>1. Conferir → 2. Manifestar-se → 3. Acompanhar.</b></p>
+      <ul class="clean"><li>Confirmar ou ajustar a apuração equivale a confissão da dívida.</li><li>Não se manifestar no prazo: o saldo é presumido correto e o crédito tributário fica constituído.</li><li>Produtor e contabilidade precisam conferir os dados apresentados.</li></ul>
+      <p class="law">LC nº 214/2025, art. 46, §§ 3º e 4º.</p></div>
+  </div>
+</section>
+
+<!-- ================= CONTRIBUINTE ================= -->
+<section id="contribuinte">
+  <div class="head"><div class="blk">Enquadramento</div><h2>Quem passa a ser contribuinte</h2>
+    <p>O produtor rural pessoa física ou jurídica com receita anual inferior a R$ 3,6 milhões, e o produtor integrado (sem limite de valor), poderá optar por ser contribuinte do IBS e da CBS. A regra optativa e o limite também valem para sociedades cooperativas pequenas.</p></div>
+  <div class="card sim">
+    <div class="fields">
+      <div class="field"><label for="enR">Receita da atividade rural<small>agricultura, pecuária, madeira de floresta cultivada, complementos de preço</small></label><input id="enR" type="number" min="0" step="10000" value="2800000"></div>
+      <div class="field"><label for="enP">Receita de empresa agropecuária participada<small>participação societária: soma</small></label><input id="enP" type="number" min="0" step="10000" value="1100000"></div>
+      <div class="field"><label for="enI">Receita de contrato de integração<small>não entra no limite</small></label><input id="enI" type="number" min="0" step="10000" value="0"></div>
+      <div class="field"><label for="enB">Venda de máquinas, terra nua ou adiantamentos antes da entrega<small>não entram no limite</small></label><input id="enB" type="number" min="0" step="10000" value="0"></div>
+      <div class="field"><label for="enL">Limite do ano<small>R$ 3,6 mi; atualizado pelo IPCA a partir de 2027</small></label><input id="enL" type="number" min="0" step="10000" value="3600000"></div>
+      <div class="years" role="group" aria-label="Exemplos e cenários"><button type="button" data-en="integ">Exemplo: integração</button><button type="button" data-en="soc">Exemplo: participação societária</button><button type="button" data-en="c32">Cenário R$ 3,2 mi</button><button type="button" data-en="c38">R$ 3,8 mi</button><button type="button" data-en="c45">R$ 4,5 mi</button></div>
+    </div>
+    <div class="out">
+      <div class="kpis" id="enK"></div>
+      <div class="limbar" id="enBar" aria-hidden="true"></div>
+      <div class="verdict" id="enMsg" style="margin-top:14px"></div>
+      <p class="law">Decreto nº 12.955/2026, arts. 238, 239 (§§ 1º, 3º, 4º e 8º) e 241 a 243; LC nº 214/2025, arts. 164 e 167.</p>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="card"><h3>Entram no cálculo</h3><ul class="clean ok"><li>Receita da atividade rural: agricultura, pecuária, exploração vegetal e animal</li><li>Venda de madeira de floresta cultivada</li><li>Produtos só com transformação rural permitida</li><li>Complementos ou acréscimos de preço recebidos depois</li></ul></div>
+    <div class="card"><h3>Não entram no cálculo</h3><ul class="clean"><li>Receita de contrato de integração</li><li>Venda de máquinas, equipamentos e bens usados na produção</li><li>Venda da terra nua</li><li>Adiantamentos de venda futura, antes da entrega</li></ul></div>
+    <div class="card"><h3>Planejar a receita</h3><p style="color:var(--ink-2)"><b>Olhar para trás:</b> receita, compradores e meses de entrega; separar o que não entra no limite; examinar compras e investimentos. <b>Olhar para frente:</b> projetar área, produtividade, preços, animais e contratos com entrega prevista.</p></div>
+  </div>
+  <div class="card"><div class="blk">O dilema do regime</div><h3>O crédito é mesmo uma vantagem?</h3>
+    <div class="cmp">
+      <div class="card"><h3>Cenário 1: contribuinte</h3><ul class="clean"><li>Compra: R$ 3.300 (R$ 3.000 de custo + R$ 300 de IBS/CBS) · R$ 300 viram crédito</li><li>Venda: R$ 6.600 (R$ 600 de débito)</li><li>Apuração: débito 600 − crédito 300 = R$ 300 de imposto</li></ul><div class="res">6.600 − 3.300 − 300 = R$ 3.000</div><p class="note">Pagou antes, compensou depois: maior pressão no caixa.</p></div>
+      <div class="card"><h3>Cenário 2: não contribuinte</h3><ul class="clean"><li>Compra: R$ 3.000 (só o custo), sem desembolso de tributo na entrada</li><li>Venda: R$ 6.600 (R$ 600 de débito)</li><li>Apuração: débito 600 − crédito presumido 50 = R$ 550</li></ul><div class="res">6.600 − 3.000 − 550 = R$ 3.050</div><p class="note">Menor desembolso inicial.</p></div>
+    </div>
+    <p class="note">Números didáticos da apresentação. O produtor não contribuinte não recolhe IBS e CBS nas vendas nessa condição e não apropria créditos ordinários; o comprador do regime regular pode apropriar <b>crédito presumido</b>, com documento fiscal e pagamento confirmado. O percentual é divulgado por ato conjunto até setembro e vale a partir de janeiro do ano seguinte; para 2027, a apresentação não localizou o percentual em ato oficial até 17/10/2026.</p>
+    <p class="law">LC nº 214/2025, arts. 164 e 168; Decreto nº 12.955/2026, arts. 239, 245 e 247.</p>
+  </div>
+</section>
+
+<!-- ================= INSUMOS ================= -->
+<section id="insumos">
+  <div class="head"><div class="blk">Bloco 4</div><h2>Insumos, diferimento e custo de produção</h2>
+    <p>Insumos são produtos e serviços usados na produção rural, previstos no Anexo IX da LC nº 214/2025, que podem exigir registro no MAPA. Nas compras com diferimento, o IBS e a CBS não são desembolsados no momento da compra.</p></div>
+  <div class="g2">
+    <div class="card"><h3>Bens passíveis de diferimento (exemplos do Anexo IX)</h3>
+      <div class="tw"><table><thead><tr><th>Produto</th><th>NCM/SH</th></tr></thead><tbody>
+        <tr><td>Biofertilizantes</td><td class="mono">3101.00.00</td></tr>
+        <tr><td>Fertilizantes (adubos)</td><td class="mono">Cap. 31 · 3824.99.77 · 3824.99.79 · 3824.99.89</td></tr>
+        <tr><td>Corretivos de solo, remineralizadores e substratos</td><td class="mono">Cap. 25</td></tr>
+        <tr><td>Aves de um dia, exceto ornamentais</td><td class="mono">0105.1</td></tr>
+        <tr><td>Ovos fertilizados</td><td class="mono">0407.1</td></tr>
+        <tr><td>Embriões e sêmen, congelado ou resfriado</td><td class="mono">0511.10.00 · 0511.9</td></tr>
+        <tr><td>Rações, concentrados, suplementos, aditivos, premix ou núcleo (exceto animais domésticos)</td><td class="mono">2309.90</td></tr>
+        <tr><td>Sementes e cereais, mesmo triturados ou trabalhados</td><td class="mono">Cap. 10, 11 e 12</td></tr>
+        <tr><td>Inseticidas, fungicidas, formicidas, herbicidas, parasiticidas, germicidas, acaricidas</td><td class="mono">38.08 · 3824.99.89</td></tr>
+      </tbody></table></div>
+      <p class="law">LC nº 214/2025, art. 138, § 2º, e Anexo IX; Decreto nº 12.955/2026, arts. 213 e 214.</p></div>
+    <div class="card"><h3>Combustíveis, energia, serviços e máquinas</h3>
+      <ul class="clean">
+        <li><b>Diesel:</b> o contribuinte pode aproveitar créditos dos combustíveis usados na produção. Confira quantidade e IBS/CBS registrados no documento fiscal. <b>Não calcule o crédito aplicando uma alíquota sobre o preço do diesel.</b> Organize notas e abastecimentos por máquina ou atividade.</li>
+        <li><b>Energia elétrica:</b> irrigação, bombeamento, secagem e resfriamento elevam o custo. Confira titularidade, documento fiscal e IBS/CBS registrados; separe o uso pessoal.</li>
+        <li><b>Serviços:</b> empresa contratada para colheita, com serviço documentado e tributado, pode gerar crédito. Salário de operador empregado não gera crédito ordinário. Serviços agronômicos, veterinários e de semeadura ou colheita podem ter tratamento reduzido.</li>
+        <li><b>Máquinas:</b> compra tributada pelo contribuinte regular dá crédito integral e imediato; bem alcançado pela suspensão fica sem pagamento imediato da CBS; máquina listada para produtor não contribuinte pode ter alíquota zero. Nenhum desses tratamentos alcança automaticamente toda máquina agrícola.</li>
+      </ul>
+      <p class="law">LC nº 214/2025, arts. 28, 47, 57, 108 a 110, 138 e 180; Decreto nº 12.955/2026, arts. 196, 197 e 267.</p></div>
+  </div>
+</section>
+
+<!-- ================= VENDA ================= -->
+<section id="venda">
+  <div class="head"><div class="blk">Comercialização</div><h2>Preço de venda, créditos e contratos</h2></div>
+  <div class="g3">
+    <div class="card"><h3>Separe o preço dos tributos</h3><p style="color:var(--ink-2)">João vende 100 t de soja × R$ 1.000 = <b>R$ 100.000</b> pela produção. Com IBS/CBS de 4% (premissa para 2027), a cerealista paga <b>R$ 104.000</b>.</p><p><b>R$ 104.000 de pagamento não são R$ 104.000 de preço da soja.</b></p><p class="note">Na proposta e no contrato, identifique quantidade, preço unitário, preço da produção e tributos incidentes.</p><p class="law">LC nº 214/2025, arts. 12, § 2º, I, e 47.</p></div>
+    <div class="card"><h3>Fato gerador</h3><p style="color:var(--ink-2)">O fato gerador <b>não ocorre só na entrega</b>: também pode ocorrer no recebimento do pagamento. Fornecimento e pagamento são momentos relevantes da operação.</p><p class="law">LC nº 214/2025, arts. 3º e 10.</p></div>
+    <div class="card"><h3>Atos cooperados</h3><p style="color:var(--ink-2)">Entre cooperativa e associado do regime regular não há tributação: alíquota zero de associado para cooperativa e de cooperativa para associado contribuinte. Para associado não contribuinte, a alíquota zero depende da anulação dos créditos (ex.: trator fornecido ao associado).</p><p class="law">Art. 271, I e II.</p></div>
+  </div>
+  <div class="g2">
+    <div class="card"><h3>Cláusulas com risco de desconto no preço</h3>
+      <ul class="clean"><li>“Será descontado do preço a ser pago pela compradora o valor de eventual tributo… que onere as operações realizadas pela compradora.”</li><li>“A majoração ou a criação de novos tributos não constituem fatos geradores capazes de ensejar qualquer revisão…”</li><li>“O preço ajustado entre as partes é fixo, irretratável e irreajustável e não está sujeito a qualquer tipo de revisão.”</li></ul></div>
+    <div class="card"><h3>Revise antes de entregar a produção</h3>
+      <ol class="clean" style="padding-left:20px"><li>Localize contratos assinados em 2026 com entrega prevista para 2027.</li><li>Leia as cláusulas de preço fixo, tributos futuros e alteração legislativa.</li><li>Calcule o efeito dos novos tributos sobre a remuneração contratada.</li><li>Se necessário, proponha por escrito a separação entre preço da produção e tributos.</li><li>Havendo recusa, submeta o contrato e o cálculo do impacto à análise jurídica.</li></ol>
+      <p class="law">LC nº 214/2025, art. 12, § 2º, I; Código Civil, arts. 113, 421, 421-A, 422, 423 e 424. A revisão depende das cláusulas e das circunstâncias comprovadas; não é automática.</p></div>
+  </div>
+</section>
+
+<!-- ================= EXPORTAÇÃO ================= -->
+<section id="exportacao">
+  <div class="head"><div class="blk">Exportação</div><h2>Exportação indireta via comercial exportadora</h2>
+    <p>Na venda do produtor para exportação, o IBS e a CBS ficam suspensos. A comercial exportadora é responsável pelo tributo suspenso e deve pagá-lo se não houver exportação em até 180 dias.</p></div>
+  <div class="g2">
+    <div class="card"><h3>Nota fiscal → 180 dias → exportação efetiva → alíquota zero</h3>
+      <ul class="clean"><li>Confirmar exportadora habilitada.</li><li>Verificar o fim específico de exportação.</li><li>Preencher as informações complementares.</li><li>Conferir o CFOP: produção própria em MT, <b>5.501</b> na remessa interna ou <b>6.501</b> na interestadual.</li><li>A remessa para formação de lote e despacho aduaneiro não descaracteriza o fim de exportação.</li></ul></div>
+    <div class="card"><h3>Sugestão de informação complementar</h3><p class="mono" style="font-size:.88rem;background:var(--bg);padding:12px;border-radius:6px">“Remessa com fim específico de exportação para comercial exportadora habilitada, com suspensão do IBS e da CBS, nos termos do art. 82 da LC nº 214/2025.”</p>
+      <p class="law">LC nº 214/2025, art. 82, §§ 3º a 5º e 10; Decreto nº 12.955/2026, arts. 97 a 101; Convênio ICMS nº 190/17.</p></div>
+  </div>
+</section>
+
+<!-- ================= GESTÃO DA FAZENDA ================= -->
+<section id="gestao">
+  <div class="head"><div class="blk">Gestão tributária da fazenda</div><h2>Ferramentas para o dia a dia</h2>
+    <p>Quatro simuladores para levar as regras para a gestão: compensar o crédito de investimentos, dimensionar o capital de giro dos tributos, acompanhar créditos e recebimentos com alertas, e saber a alíquota e o diferimento dos insumos. Todos os valores são editáveis e as alíquotas são premissas didáticas.</p></div>
+
+  <!-- 1. investimentos -->
+  <div class="card" id="investimento"><div class="blk">1 · Investimentos</div><h3>Como compensar o crédito de uma máquina</h3>
+    <div class="sim">
+      <div class="fields">
+        <div class="field"><label for="ivV">Valor do investimento<small>sem tributo, R$</small></label><input id="ivV" type="number" min="0" step="10000" value="1000000"></div>
+        <div class="field"><label for="ivT">Tratamento da compra</label><select id="ivT"><option value="trib">Compra tributada (contribuinte regular)</option><option value="susp">Bem alcançado pela suspensão</option><option value="zero">Máquina listada · produtor não contribuinte</option></select></div>
+        <div class="field"><label for="ivA">Alíquota IBS/CBS na compra<small>% · 28% é a ilustração dos slides</small></label><input id="ivA" type="number" min="0" max="40" step="0.1" value="28"></div>
+        <div class="field"><label for="ivD">Débitos mensais nas vendas<small>IBS/CBS das vendas, R$/mês</small></label><input id="ivD" type="number" min="0" step="1000" value="40000"></div>
+        <div class="field"><label for="ivC">Créditos mensais de insumos<small>já liberados, R$/mês</small></label><input id="ivC" type="number" min="0" step="1000" value="10000"></div>
+      </div>
+      <div class="out"><div class="kpis" id="ivK"></div><div id="ivChart"></div><div class="verdict" id="ivMsg"></div></div>
+    </div>
+    <p class="note">O crédito do bem de capital é integral e imediato para o contribuinte regular, cumpridas as condições legais. Ele abate os débitos das vendas; o saldo credor que sobra fica para os meses seguintes. <b>Saldo credor não é dinheiro em conta.</b> A devolução em dinheiro (ressarcimento) segue regras e prazos próprios da LC nº 214/2025.</p>
+  </div>
+
+  <!-- 2. giro -->
+  <div class="card" id="giro"><div class="blk">2 · Capital de giro</div><h3>Quanto caixa os tributos prendem durante a safra</h3>
+    <div class="sim">
+      <div class="fields">
+        <div class="field"><label for="grC">Compras da safra<small>insumos e serviços, R$</small></label><input id="grC" type="number" min="0" step="50000" value="2000000"></div>
+        <div class="field"><label for="grV">Vendas da safra<small>R$</small></label><input id="grV" type="number" min="0" step="50000" value="3200000"></div>
+        <div class="field"><label for="grAc">Alíquota nas compras<small>% efetiva</small></label><input id="grAc" type="number" min="0" max="40" step="0.1" value="4"></div>
+        <div class="field"><label for="grAv">Alíquota nas vendas<small>% · 4% é a premissa de 2027</small></label><input id="grAv" type="number" min="0" max="40" step="0.1" value="4"></div>
+        <div class="field"><label for="grD">Compras com diferimento<small>% das compras</small></label><input id="grD" type="number" min="0" max="100" step="1" value="60"></div>
+        <div class="field"><label for="grP">Calendário<small>meses de compra e de venda</small></label><select id="grP"><option value="soja">Soja e milho (compras ago–dez, vendas fev–jul)</option><option value="boi">Pecuária (compras e vendas ao longo do ano)</option><option value="uniforme">Uniforme (todos os meses)</option></select></div>
+      </div>
+      <div class="out"><div class="kpis" id="grK"></div><div id="grChart"></div><div class="verdict" id="grMsg"></div></div>
+    </div>
+    <details><summary class="note" style="cursor:pointer">Ver a tabela mês a mês</summary><div class="tw"><table id="grT"></table></div></details>
+    <p class="note">Conta: o tributo pago ao fornecedor nas compras sem diferimento sai do caixa e vira crédito; nas vendas, o comprador paga o IBS/CBS “por fora” e o produtor recolhe só o que passar dos créditos. O ponto mais baixo do acumulado é o giro necessário.</p>
+  </div>
+
+  <!-- 3. painel -->
+  <div class="card" id="painel"><div class="blk">3 · Acompanhamento</div><h3>Painel de créditos, recebimentos e alertas</h3>
+    <p class="note" id="opSrc">Exemplo com operações fictícias. Registre as suas abaixo: os dados ficam só neste navegador.</p>
+    <div class="kpis" id="opK"></div>
+    <div class="alerts" id="opA"></div>
+    <div class="tw"><table class="ops" id="opT"></table></div>
+    <form class="add" id="opF">
+      <label>Tipo<select id="opTipo"><option value="compra">Compra</option><option value="venda">Venda</option><option value="export">Remessa p/ exportação</option></select></label>
+      <label>Data<input id="opData" type="date" required></label>
+      <label>Contraparte<input id="opCp" type="text" placeholder="Fornecedor ou comprador" required></label>
+      <label>Valor (sem tributo)<input id="opVal" type="number" min="0" step="100" required></label>
+      <label>Alíquota %<input id="opAl" type="number" min="0" max="40" step="0.1" value="4"></label>
+      <label>Situação<select id="opSt"><option value="0">Pendente</option><option value="1">Paga / recebida / exportada</option></select></label>
+      <button type="submit" class="btn pri">Adicionar</button>
+    </form>
+    <div class="field" style="max-width:420px"><label for="opDia">Dia do mês para conferir a apuração assistida</label><input id="opDia" type="number" min="1" max="28" value="20"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="opEx">Restaurar exemplo</button><button type="button" class="btn" id="opClr">Limpar tudo</button></div>
+  </div>
+
+  <!-- 4. insumos -->
+  <div class="card" id="gestinsumos"><div class="blk">4 · Gestão dos insumos</div><h3>Qual a alíquota dos insumos que compro e o que tem mais diferimento</h3>
+    <div class="field" style="max-width:520px"><label for="inA">Alíquota cheia de referência<small>% · insumos do Anexo IX com redução de 60% (28% → 11,2%)</small></label><input id="inA" type="number" min="0" max="40" step="0.1" value="28"></div>
+    <div class="tw"><table class="ins" id="inT"></table></div>
+    <div class="kpis" id="inK"></div>
+    <div class="g2">
+      <div><h3 style="font-size:1rem;margin-bottom:10px">O que tem mais diferimento na sua compra</h3><div class="rank" id="inR"></div></div>
+      <div class="disc"><b>Como saber a alíquota de um insumo</b>
+        <ol class="clean" style="padding-left:20px;margin-top:6px"><li>Pegue o <b>NCM</b> na nota fiscal do fornecedor.</li><li>Confira se o produto está no <b>Anexo IX</b> da LC nº 214/2025 (tabela acima traz exemplos).</li><li>Verifique se exige <b>registro no MAPA</b> e se a destinação e os requisitos do art. 138 são cumpridos.</li><li>Confira o <b>IBS/CBS destacado</b> no documento fiscal: é ele que gera crédito, não uma conta feita sobre o preço.</li></ol>
+        <p style="margin-top:8px">60% de compras com diferimento é a participação no custo, não uma economia de 60% dos tributos.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="disc">Material didático elaborado a partir de uma apresentação sobre a reforma tributária no agro. As alíquotas e os exemplos são premissas ilustrativas. Antes de decidir, confira a legislação vigente (EC nº 132/2023, LC nº 214/2025 e Decreto nº 12.955/2026), os atos posteriores e a orientação do seu contador.</div>
+
+<footer>
+  <p><b>Reforma tributária no agro</b> · página de estudo e simulação. Fontes citadas nos slides: EC nº 132/2023, LC nº 214/2025, Decreto nº 12.955/2026, Código Civil e Convênio ICMS nº 190/17; figura do período de transição elaborada pela CNA.</p>
+</footer>
+</div>
+<div id="tip" hidden style="position:fixed;pointer-events:none;z-index:20;background:var(--ink);color:var(--bg);font-size:.8rem;padding:6px 9px;border-radius:5px"></div>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const nf=d=>new Intl.NumberFormat("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const brl=x=>Number.isFinite(x)?"R$ "+nf(2).format(x):"–";
+const brl0=x=>Number.isFinite(x)?"R$ "+nf(0).format(x):"–";
+const pct=(x,d=1)=>Number.isFinite(x)?nf(d).format(x)+"%":"–";
+const val=id=>{const v=parseFloat($(id).value);return Number.isFinite(v)?v:0;};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const kpi=(v,k,cls="")=>`<div class="kpi ${cls}"><span class="v">${v}</span><span class="k">${k}</span></div>`;
+const tip=$("tip");
+document.addEventListener("pointermove",e=>{const t=e.target.closest&&e.target.closest("[data-tip]");if(!t){tip.hidden=true;return;}tip.innerHTML=t.getAttribute("data-tip");tip.hidden=false;
+  let x=e.clientX+12,y=e.clientY-tip.offsetHeight-10;if(x+tip.offsetWidth>innerWidth-8)x=e.clientX-tip.offsetWidth-12;if(y<8)y=e.clientY+14;tip.style.left=x+"px";tip.style.top=y+"px";});
+
+/* ---------- linha do tempo ---------- */
+const YRS=[2026,2027,2028,2029,2030,2031,2032,2033];
+const SEN="Alíquota definida pelo Senado Federal";
+const T=[
+ {n:"ICMS",y:["Sem alteração","Sem alteração","Sem alteração","90%","80%","70%","60%","Extinção"]},
+ {n:"ISS",y:["Sem alteração","Sem alteração","Sem alteração","90%","80%","70%","60%","Extinção"]},
+ {n:"IPI",y:["Sem alteração","Alíquota zero + IPI ZFM","IPI ZFM","IPI ZFM","IPI ZFM","IPI ZFM","IPI ZFM","IPI ZFM"]},
+ {n:"PIS",y:["Sem alteração","Extinção","—","—","—","—","—","—"]},
+ {n:"Cofins",y:["Sem alteração","Extinção","—","—","—","—","—","—"]},
+ {n:"IBS",nw:1,y:["0,1% IBS UF","0,05% IBS UF e 0,05% IBS Mun","0,05% IBS UF e 0,05% IBS Mun",SEN,SEN,SEN,SEN,SEN]},
+ {n:"IS",nw:1,y:["—",SEN,SEN,SEN,SEN,SEN,SEN,SEN]},
+ {n:"CBS",nw:1,y:["0,9%",SEN,SEN,SEN,SEN,SEN,SEN,SEN]}];
+const cls=(s,nw)=>s==="—"?"st-none":/Extin/.test(s)?"st-end":nw?"st-new":/Sem alter/.test(s)?"st-same":"st-old";
+let ANO=2027;
+function drawTL(){
+  $("years").innerHTML=YRS.map(y=>`<button type="button" data-y="${y}" aria-pressed="${y===ANO}">${y}</button>`).join("");
+  $("years").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{ANO=+b.dataset.y;drawTL();}));
+  const i=YRS.indexOf(ANO);
+  $("tl").innerHTML=`<thead><tr><th>Tributo</th>${YRS.map(y=>`<th class="${y===ANO?"cur":""}">${y}</th>`).join("")}</tr></thead><tbody>`+
+    T.map(t=>`<tr><td>${t.n}</td>${t.y.map((s,j)=>`<td class="${j===i?"cur":""}"><span class="st ${cls(s,t.nw)}">${s===SEN?"Senado define":s}</span></td>`).join("")}</tr>`).join("")+`</tbody>`;
+  const old=T.filter(t=>!t.nw), nw=T.filter(t=>t.nw);
+  const vig=old.filter(t=>!/Extin|—/.test(t.y[i])).map(t=>t.n), ext=old.filter(t=>/Extin/.test(t.y[i])).map(t=>t.n);
+  const red=old.filter(t=>/%/.test(t.y[i])).map(t=>`${t.n} ${t.y[i]}`);
+  $("ystat").innerHTML=`<div><b>Tributos atuais</b><span>${vig.length?vig.join(", "):"nenhum, exceto IPI na ZFM"}</span></div>
+   <div><b>Reduzindo</b><span>${red.length?red.join(" · ")+" da alíquota":"—"}</span></div>
+   <div><b>Extintos neste ano</b><span>${ext.length?ext.join(", "):"—"}</span></div>
+   <div><b>IBS e CBS</b><span>${nw.filter(t=>t.y[i]!=="—").map(t=>`${t.n}: ${t.y[i]===SEN?"alíquota do Senado":t.y[i]}`).join(" · ")}</span></div>`;
+}
+
+/* ---------- não cumulatividade ---------- */
+function drawNC(){
+  const c=val("ncC"),v=val("ncV"),a=val("ncA")/100,pago=$("ncP").checked;
+  const cr=c*a,db=v*a,lib=pago?cr:0,saldo=Math.max(db-lib,0);
+  $("ncSteps").innerHTML=`<div class="st4 cr"><span class="t">1 · Compra (crédito)</span><span class="v">${brl0(cr)}</span><span class="note">nota de ${brl0(c+cr)}</span></div>
+   <div class="st4"><span class="t">2 · Trabalho no campo</span><span class="note">insumos viram produção</span></div>
+   <div class="st4 db"><span class="t">3 · Venda (débito)</span><span class="v">${brl0(db)}</span><span class="note">nota de ${brl0(v+db)}</span></div>
+   <div class="st4 tot"><span class="t">4 · A recolher</span><span class="v">${brl0(saldo)}</span><span>${brl0(db)} − ${brl0(lib)}</span></div>`;
+  const m=$("ncMsg");
+  if(pago){m.className="verdict ok";m.innerHTML=`Crédito de ${brl0(cr)} liberado: o produtor recolhe ${brl0(saldo)}.<p>O IBS/CBS sai “por fora”: o comprador paga ${brl0(v+db)}, dos quais ${brl0(v)} são o preço da produção.</p>`;}
+  else{m.className="verdict b";m.innerHTML=`Fornecedor não pago: crédito de ${brl0(cr)} travado e ${brl0(cr)} a mais a recolher.<p>Pelo art. 47, o crédito depende da extinção do débito do fornecedor. Agora não basta emitir, é preciso pagar.</p>`;}
+}
+
+/* ---------- enquadramento ---------- */
+const EN={integ:{enR:3200000,enP:0,enI:900000,enB:0},soc:{enR:2800000,enP:1100000,enI:0,enB:0},c32:{enR:3200000,enP:0,enI:0,enB:0},c38:{enR:3800000,enP:0,enI:0,enB:0},c45:{enR:4500000,enP:0,enI:0,enB:0}};
+document.querySelectorAll("[data-en]").forEach(b=>b.addEventListener("click",()=>{Object.entries(EN[b.dataset.en]).forEach(([k,v])=>$(k).value=v);drawEN();}));
+function drawEN(){
+  const r=val("enR"),p=val("enP"),i=val("enI"),b=val("enB"),L=val("enL")||1,L2=L*1.2;
+  const cons=r+p, mx=Math.max(cons,L2)*1.08;
+  $("enK").innerHTML=kpi(brl0(cons),"receita considerada para o limite","hl")+kpi(brl0(i+b),"excluída (integração, bens, terra, adiantamentos)")+kpi(pct(cons/L*100,0),"do limite de "+brl0(L));
+  $("enBar").innerHTML=`<span class="fill" style="width:${Math.min(cons/mx*100,100).toFixed(1)}%"></span><span class="mk" style="left:${(L/mx*100).toFixed(1)}%"><span>limite</span></span><span class="mk" style="left:${(L2/mx*100).toFixed(1)}%;background:var(--bad)"><span>+20%</span></span>`;
+  const m=$("enMsg");
+  if(cons<L){m.className="verdict ok";m.innerHTML=`Abaixo do limite: pode optar por ser contribuinte do IBS e da CBS.<p>Compare o crédito com o desembolso no caixa (veja “O dilema do regime”) e acompanhe a receita como trajetória.</p>`;}
+  else if(cons<=L2){m.className="verdict w";m.innerHTML=`Excesso de até 20%: passa a ser contribuinte em 1º de janeiro do ano seguinte.<p>Receita entre ${brl0(L)} e ${brl0(L2)}. Planeje o caixa, os contratos e a contabilidade para a virada do ano.</p>`;}
+  else{m.className="verdict b";m.innerHTML=`Excesso superior a 20%: passa a ser contribuinte a partir do segundo mês subsequente ao excesso.<p>Receita acima de ${brl0(L2)}. A mudança é rápida: prepare notas, sistemas e apuração desde já.</p>`;}
+}
+
+/* ---------- 1. investimentos ---------- */
+function drawIV(){
+  const V=val("ivV"),t=$("ivT").value,a=val("ivA")/100,D=val("ivD"),C=val("ivC");
+  const net=D-C; let cred=0,desemb=0;
+  if(t==="trib"){desemb=V*a;cred=V*a;}
+  const meses=cred>0&&net>0?Math.ceil(cred/net):null;
+  const lab={trib:"Compra tributada",susp:"Suspensão",zero:"Alíquota zero"}[t];
+  $("ivK").innerHTML=kpi(brl0(desemb),"tributo pago na compra (sai do caixa)",desemb>0?"w":"")+kpi(brl0(cred),"crédito gerado, integral e imediato","hl")+kpi(net>0?brl0(net):"–","débito líquido por mês para absorver")+kpi(meses!=null?`${meses} ${meses===1?"mês":"meses"}`:"–","para compensar o crédito");
+  // gráfico do saldo credor
+  const H=[];let s=cred;const N=Math.min(Math.max(meses||0,6),36);
+  for(let m=0;m<=N;m++){H.push(s);s=Math.max(s-Math.max(net,0),0);}
+  const W=560,Hh=170,mg={l:58,r:10,t:10,b:24},iw=W-mg.l-mg.r,ih=Hh-mg.t-mg.b,mx=Math.max(cred,1);
+  const X=m=>mg.l+m/N*iw,Y=v=>mg.t+(1-v/mx)*ih;
+  let g="";[0,.5,1].forEach(f=>{g+=`<line class="grid" x1="${mg.l}" x2="${W-mg.r}" y1="${Y(mx*f)}" y2="${Y(mx*f)}"/><text x="${mg.l-6}" y="${Y(mx*f)+4}" text-anchor="end">${nf(0).format(mx*f/1000)} mil</text>`;});
+  const step=N>18?6:N>8?3:1;for(let m=0;m<=N;m+=step)g+=`<text x="${X(m)}" y="${Hh-6}" text-anchor="middle">${m}</text>`;
+  const bw=iw/(N+1)*.7;
+  g+=H.map((v,m)=>`<rect x="${(X(m)-bw/2).toFixed(1)}" y="${Y(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(mg.t+ih-Y(v)).toFixed(1)}" rx="2" fill="var(--accent)" data-tip="mês ${m}: saldo credor ${esc(brl0(v))}"/>`).join("");
+  g+=`<line class="base" x1="${mg.l}" x2="${W-mg.r}" y1="${mg.t+ih}" y2="${mg.t+ih}"/><text x="${W-mg.r}" y="${mg.t+8}" text-anchor="end" class="lbl">saldo credor por mês</text>`;
+  $("ivChart").innerHTML=cred>0?`<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Saldo credor do investimento ao longo dos meses">${g}</svg>`:"";
+  const m=$("ivMsg");
+  if(t==="trib"){
+    if(net<=0){m.className="verdict b";m.innerHTML=`Os créditos de insumos já cobrem os débitos: o crédito da máquina não é absorvido.<p>O saldo credor de ${brl0(cred)} fica parado. Avalie o pedido de ressarcimento e o caixa que ficou preso na compra.</p>`;}
+    else{m.className=meses>12?"verdict w":"verdict ok";m.innerHTML=`${lab}: o crédito de ${brl0(cred)} é compensado em cerca de ${meses} ${meses===1?"mês":"meses"} de vendas.<p>Na compra, o caixa adianta ${brl0(desemb)}. Nos meses seguintes, o produtor recolhe menos até zerar o saldo credor. Concentre o investimento perto dos meses de venda para encurtar o prazo.</p>`;}
+  }else if(t==="susp"){m.className="verdict ok";m.innerHTML=`Suspensão: sem pagamento imediato da CBS suspensa na compra.<p>Não há tributo adiantado nem saldo credor para compensar. Confira a lista e os requisitos aplicáveis ao bem.</p>`;}
+  else{m.className="verdict ok";m.innerHTML=`Alíquota zero para máquina listada, adquirida por produtor não contribuinte.<p>Sem tributo na compra e sem crédito. Depende do enquadramento do bem e do adquirente.</p>`;}
+}
+
+/* ---------- 2. giro ---------- */
+const MESES=["ago","set","out","nov","dez","jan","fev","mar","abr","mai","jun","jul"];
+const PERF={soja:{c:[.15,.25,.3,.2,.1,0,0,0,0,0,0,0],v:[0,0,0,0,0,0,.2,.3,.25,.15,.05,.05]},
+  boi:{c:[.1,.1,.1,.08,.08,.08,.08,.08,.08,.08,.07,.07],v:[.05,.05,.06,.08,.1,.1,.1,.1,.1,.1,.08,.08]},
+  uniforme:{c:Array(12).fill(1/12),v:Array(12).fill(1/12)}};
+function giro(C,V,ac,av,dif,p){
+  let cred=0,cum=0,min=0,minM=0;const rows=[];
+  for(let m=0;m<12;m++){
+    const comp=C*p.c[m],tc=comp*(1-dif)*ac,vend=V*p.v[m],deb=vend*av;
+    cred+=tc;const use=Math.min(cred,deb);cred-=use;const rec=deb-use;
+    const cx=-tc+deb-rec;cum+=cx;if(cum<min){min=cum;minM=m;}
+    rows.push({m,comp,tc,vend,deb,rec,cred,cx,cum});
+  }
+  return {rows,giro:-min,mes:minM,credFim:cred,recTot:rows.reduce((s,r)=>s+r.rec,0)};
+}
+function drawGR(){
+  const C=val("grC"),V=val("grV"),ac=val("grAc")/100,av=val("grAv")/100,dif=Math.min(val("grD"),100)/100,p=PERF[$("grP").value];
+  const r=giro(C,V,ac,av,dif,p), s=giro(C,V,ac,av,0,p);
+  $("grK").innerHTML=kpi(brl0(r.giro),`giro necessário (pico em ${MESES[r.mes]})`,"hl")+kpi(brl0(s.giro),"sem diferimento","w")+kpi(brl0(s.giro-r.giro),"caixa que o diferimento preserva")+kpi(brl0(r.recTot),"IBS/CBS recolhido na safra")+kpi(brl0(r.credFim),"saldo credor no fim");
+  const W=560,H=200,mg={l:58,r:10,t:12,b:24},iw=W-mg.l-mg.r,ih=H-mg.t-mg.b;
+  const all=r.rows.map(x=>x.cum).concat(s.rows.map(x=>x.cum),[0]);const lo=Math.min(...all),hi=Math.max(...all);const span=(hi-lo)||1;
+  const Y=v=>mg.t+(hi-v)/span*ih, bw=iw/12;
+  let g="";[lo,0,hi].forEach(v=>{g+=`<line class="${v===0?"base":"grid"}" x1="${mg.l}" x2="${W-mg.r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${mg.l-6}" y="${Y(v)+4}" text-anchor="end">${nf(0).format(v/1000)} mil</text>`;});
+  r.rows.forEach((x,m)=>{const y0=Y(0),y=Y(x.cum),top=Math.min(y,y0),h=Math.abs(y-y0);
+    g+=`<rect x="${(mg.l+m*bw+bw*.18).toFixed(1)}" y="${top.toFixed(1)}" width="${(bw*.64).toFixed(1)}" height="${Math.max(h,1).toFixed(1)}" rx="2" fill="${x.cum<0?"var(--bad)":"var(--accent)"}" data-tip="${MESES[m]}: acumulado com diferimento ${esc(brl0(x.cum))}<br>sem diferimento ${esc(brl0(s.rows[m].cum))}"/>`;
+    g+=`<text x="${(mg.l+m*bw+bw/2).toFixed(1)}" y="${H-6}" text-anchor="middle">${MESES[m]}</text>`;});
+  g+=`<path d="${s.rows.map((x,m)=>(m?"L":"M")+(mg.l+m*bw+bw/2).toFixed(1)+","+Y(x.cum).toFixed(1)).join("")}" fill="none" stroke="var(--old)" stroke-width="2" stroke-dasharray="5 4"/>`;
+  $("grChart").innerHTML=`<div class="legend" style="margin-bottom:6px"><span><i style="background:var(--bad)"></i>caixa preso em tributo (com diferimento)</span><span><i style="background:var(--old)"></i>sem diferimento</span></div><svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Efeito acumulado dos tributos no caixa por mês">${g}</svg>`;
+  $("grT").innerHTML=`<thead><tr><th>Mês</th><th class="n">Compras</th><th class="n">Tributo pago nas compras</th><th class="n">Vendas</th><th class="n">Débito</th><th class="n">Recolhido</th><th class="n">Saldo credor</th><th class="n">Acumulado no caixa</th></tr></thead><tbody>`+
+    r.rows.map(x=>`<tr><td>${MESES[x.m]}</td><td class="n">${brl0(x.comp)}</td><td class="n">${brl0(x.tc)}</td><td class="n">${brl0(x.vend)}</td><td class="n">${brl0(x.deb)}</td><td class="n">${brl0(x.rec)}</td><td class="n">${brl0(x.cred)}</td><td class="n">${brl0(x.cum)}</td></tr>`).join("")+`</tbody>`;
+  const m=$("grMsg"); m.className=r.giro>0?"verdict w":"verdict ok";
+  m.innerHTML=r.giro>0?`Reserve cerca de ${brl0(r.giro)} de capital de giro para os tributos até ${MESES[r.mes]}.<p>É o tributo pago aos fornecedores antes de as vendas gerarem débitos para compensar. Sem diferimento seriam ${brl0(s.giro)}: identifique as compras com diferimento e use a folga para financiar a safra.</p>`:"Os débitos das vendas compensam os créditos sem prender caixa neste calendário.";
+}
+
+/* ---------- 3. painel ---------- */
+const DAY=86400000, HOJE=new Date(new Date().toDateString());
+const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+const diasAtras=n=>iso(new Date(HOJE.getTime()-n*DAY));
+const OP_EX=()=>[
+ {tipo:"compra",data:diasAtras(52),cp:"Revenda de fertilizantes (exemplo)",val:180000,al:4,ok:0},
+ {tipo:"compra",data:diasAtras(20),cp:"Sementes (exemplo)",val:90000,al:4,ok:1},
+ {tipo:"compra",data:diasAtras(8),cp:"Defensivos (exemplo)",val:120000,al:4,ok:0},
+ {tipo:"venda",data:diasAtras(45),cp:"Cerealista (exemplo)",val:400000,al:4,ok:0},
+ {tipo:"venda",data:diasAtras(12),cp:"Cooperativa (exemplo)",val:250000,al:4,ok:1},
+ {tipo:"export",data:diasAtras(160),cp:"Comercial exportadora (exemplo)",val:600000,al:4,ok:0}];
+let OPS=null, EXEMPLO=true;
+try{const s=JSON.parse(localStorage.getItem("rt-ops")||"null");if(Array.isArray(s)){OPS=s;EXEMPLO=false;}}catch(e){}
+if(!OPS) OPS=OP_EX();
+try{const d=localStorage.getItem("rt-dia");if(d)$("opDia").value=d;}catch(e){}
+function salvar(){EXEMPLO=false;try{localStorage.setItem("rt-ops",JSON.stringify(OPS));}catch(e){}}
+function drawOP(){
+  const dias=o=>Math.round((HOJE-new Date(o.data+"T00:00:00"))/DAY);
+  const trib=o=>o.val*o.al/100;
+  const comp=OPS.filter(o=>o.tipo==="compra"),vend=OPS.filter(o=>o.tipo==="venda"),exp=OPS.filter(o=>o.tipo==="export");
+  const credLib=comp.filter(o=>o.ok).reduce((s,o)=>s+trib(o),0), credTrav=comp.filter(o=>!o.ok).reduce((s,o)=>s+trib(o),0);
+  const deb=vend.reduce((s,o)=>s+trib(o),0), aRec=vend.filter(o=>!o.ok).reduce((s,o)=>s+o.val+trib(o),0);
+  const saldo=Math.max(deb-credLib,0);
+  $("opK").innerHTML=kpi(brl0(deb),"débitos nas vendas")+kpi(brl0(credLib),"créditos liberados","hl")+kpi(brl0(credTrav),"créditos travados (fornecedor não pago)",credTrav>0?"w":"")+kpi(brl0(saldo),"saldo estimado a recolher")+kpi(brl0(aRec),"a receber de clientes (com tributo)",aRec>0?"w":"");
+  const A=[];
+  comp.filter(o=>!o.ok&&trib(o)>0).forEach(o=>A.push({s:dias(o)>30?"b":"w",t:`Crédito travado: ${brl0(trib(o))} de ${o.cp}`,d:`Compra de ${dias(o)} dias sem pagamento ao fornecedor. O crédito só é liberado com a extinção do débito (art. 47).`}));
+  vend.filter(o=>!o.ok&&dias(o)>30).forEach(o=>A.push({s:"w",t:`Recebimento em aberto há ${dias(o)} dias: ${o.cp}`,d:`${brl0(o.val+trib(o))} a receber, dos quais ${brl0(trib(o))} de IBS/CBS. O fato gerador também pode ocorrer no recebimento (arts. 3º e 10).`}));
+  exp.filter(o=>!o.ok).forEach(o=>{const d=dias(o),r=180-d;A.push({s:r<=0?"b":r<=30?"b":r<=60?"w":"i",t:r<=0?`Prazo de 180 dias vencido: remessa para ${o.cp}`:`Exportação: faltam ${r} dias para os 180 (${o.cp})`,d:r<=0?"Sem exportação efetiva no prazo, a comercial exportadora deve pagar o tributo suspenso. Confirme a situação e o que diz o contrato.":"Acompanhe a exportação efetiva e guarde a comprovação do fim específico."});});
+  const dia=Math.min(Math.max(val("opDia")||20,1),28);let prox=new Date(HOJE.getFullYear(),HOJE.getMonth(),dia);if(prox<HOJE)prox=new Date(HOJE.getFullYear(),HOJE.getMonth()+1,dia);
+  const fd=Math.round((prox-HOJE)/DAY);
+  A.push({s:fd<=5?"w":"i",t:`Apuração assistida: conferir até ${prox.toLocaleDateString("pt-BR")} (${fd===0?"hoje":fd+" dias"})`,d:"Não se manifestar no prazo faz o saldo ser presumido correto e constitui o crédito tributário (art. 46)."});
+  const ano=HOJE.getFullYear(),recAno=vend.filter(o=>o.data.slice(0,4)==String(ano)).reduce((s,o)=>s+o.val,0)+exp.filter(o=>o.data.slice(0,4)==String(ano)).reduce((s,o)=>s+o.val,0);
+  if(recAno>=3600000*0.8) A.push({s:recAno>=3600000?"b":"w",t:`Receita registrada em ${ano}: ${brl0(recAno)} (${pct(recAno/36000,0)} do limite)`,d:"Compare com o limite de R$ 3,6 milhões. Excesso de até 20% torna contribuinte em 1º de janeiro do ano seguinte; acima disso, a partir do segundo mês."});
+  if(!A.filter(a=>a.s!=="i").length) A.push({s:"ok",t:"Sem pendências nas operações registradas",d:"Continue registrando compras, vendas e remessas."});
+  const ord={b:0,w:1,i:2,ok:3};A.sort((a,b)=>ord[a.s]-ord[b.s]);
+  const SV={b:"crítico",w:"atenção",i:"lembrete",ok:"em dia"};
+  $("opA").innerHTML=A.map(a=>`<div class="al ${a.s}"><span class="sv">${SV[a.s]}</span><div><b>${esc(a.t)}</b><p>${esc(a.d)}</p></div></div>`).join("");
+  const TL={compra:"Compra",venda:"Venda",export:"Remessa p/ exportação"};
+  const stl=o=>{const d=dias(o);if(o.ok)return `<span class="stt ok">${o.tipo==="compra"?"paga":o.tipo==="venda"?"recebida":"exportada"}</span>`;
+    const late=o.tipo==="export"?d>=150:d>30;return `<span class="stt ${late?"late":"pend"}">${o.tipo==="compra"?"fornecedor não pago":o.tipo==="venda"?"a receber":"aguardando exportação"}</span>`;};
+  $("opT").innerHTML=`<thead><tr><th>Data</th><th>Tipo</th><th>Contraparte</th><th class="n">Valor</th><th class="n">IBS/CBS</th><th>Situação</th><th></th></tr></thead><tbody>`+
+    OPS.map((o,i)=>`<tr><td class="mono">${new Date(o.data+"T00:00:00").toLocaleDateString("pt-BR")}</td><td>${TL[o.tipo]}</td><td>${esc(o.cp)}</td><td class="n">${brl0(o.val)}</td><td class="n">${o.tipo==="export"?"suspenso":brl0(trib(o))}</td><td>${stl(o)}</td><td style="white-space:nowrap"><button type="button" data-t="${i}">${o.ok?"Reabrir":o.tipo==="compra"?"Marcar paga":o.tipo==="venda"?"Marcar recebida":"Marcar exportada"}</button> <button type="button" data-d="${i}" aria-label="Excluir">Excluir</button></td></tr>`).join("")+`</tbody>`;
+  $("opT").querySelectorAll("[data-t]").forEach(b=>b.addEventListener("click",()=>{OPS[+b.dataset.t].ok=OPS[+b.dataset.t].ok?0:1;salvar();drawOP();}));
+  $("opT").querySelectorAll("[data-d]").forEach(b=>b.addEventListener("click",()=>{OPS.splice(+b.dataset.d,1);salvar();drawOP();}));
+  $("opSrc").textContent=EXEMPLO?"Exemplo com operações fictícias. Registre as suas abaixo: os dados ficam só neste navegador.":"Suas operações registradas neste navegador.";
+}
+$("opData").value=iso(HOJE);
+$("opF").addEventListener("submit",e=>{e.preventDefault();const v=parseFloat($("opVal").value);if(!(v>0))return;
+  if(EXEMPLO){OPS=[];}
+  OPS.unshift({tipo:$("opTipo").value,data:$("opData").value||iso(HOJE),cp:$("opCp").value.trim()||"Sem nome",val:v,al:parseFloat($("opAl").value)||0,ok:+$("opSt").value});
+  salvar();$("opCp").value="";$("opVal").value="";drawOP();});
+$("opEx").addEventListener("click",()=>{OPS=OP_EX();EXEMPLO=true;try{localStorage.removeItem("rt-ops");}catch(e){}drawOP();});
+$("opClr").addEventListener("click",()=>{OPS=[];salvar();drawOP();});
+$("opDia").addEventListener("input",()=>{try{localStorage.setItem("rt-dia",$("opDia").value);}catch(e){}drawOP();});
+
+/* ---------- 4. insumos ---------- */
+const INS=[
+ {n:"Fertilizantes e corretivos",r:"Anexo IX · cap. 31 e 25",tr:"dif",v:600000},
+ {n:"Defensivos (inseticidas, fungicidas, herbicidas)",r:"Anexo IX · 38.08 · 3824.99.89",tr:"dif",v:400000},
+ {n:"Sementes",r:"Anexo IX · cap. 10, 11 e 12",tr:"dif",v:200000},
+ {n:"Rações, suplementos e premix",r:"Anexo IX · 2309.90",tr:"dif",v:0},
+ {n:"Sêmen, embriões, ovos fertilizados, aves de um dia",r:"Anexo IX · 0511 · 0407.1 · 0105.1",tr:"dif",v:0},
+ {n:"Bioinsumos e biofertilizantes",r:"Anexo IX · 3101.00.00",tr:"dif",v:0},
+ {n:"Serviços agronômicos, veterinários, semeadura e colheita",r:"Anexo IX · itens 22, 24 e 29",tr:"red",v:150000},
+ {n:"Óleo diesel",r:"crédito pelo documento fiscal",tr:"esp",v:250000},
+ {n:"Energia elétrica",r:"arts. 28, 47 e 57",tr:"ger",v:100000},
+ {n:"Máquinas e implementos",r:"arts. 108 a 110 · Anexo IV",tr:"cap",v:0},
+ {n:"Peças, manutenção e outros",r:"regime geral",tr:"ger",v:300000}];
+const TR={dif:["Diferimento · Anexo IX","p-dif"],red:["Tratamento reduzido","p-red"],esp:["Regime específico","p-esp"],cap:["Bem de capital","p-cap"],ger:["Regime geral","p-ger"]};
+function drawIN(first){
+  const A=val("inA")/100, red=A*0.4;
+  if(first){
+    $("inT").innerHTML=`<thead><tr><th>Insumo</th><th>Tratamento</th><th class="n">Valor comprado (R$)</th><th class="n">Alíquota de referência</th><th class="n">Tributo de referência</th><th class="n">% do custo</th></tr></thead><tbody>`+
+      INS.map((x,i)=>`<tr><td>${x.n}<br><span class="law">${x.r}</span></td><td><span class="pill ${TR[x.tr][1]}">${TR[x.tr][0]}</span></td><td class="n"><input type="number" min="0" step="1000" id="in${i}" value="${x.v}" aria-label="Valor comprado de ${esc(x.n)}"></td><td class="n" id="ina${i}"></td><td class="n" id="int${i}"></td><td class="n" id="inp${i}"></td></tr>`).join("")+`</tbody>`;
+    INS.forEach((x,i)=>$("in"+i).addEventListener("input",()=>drawIN(false)));
+  }
+  const vals=INS.map((x,i)=>val("in"+i)), tot=vals.reduce((s,v)=>s+v,0)||1;
+  let difV=0,difT=0;
+  INS.forEach((x,i)=>{const v=vals[i];let al=null,t=null,txt;
+    if(x.tr==="dif"||x.tr==="red"){al=red;t=v*al;txt=pct(al*100);}
+    else if(x.tr==="esp"){txt="destacado na nota";}
+    else if(x.tr==="cap"){al=A;t=v*al;txt=pct(al*100)+" ou suspensão/zero";}
+    else {al=A;t=v*al;txt=pct(al*100);}
+    $("ina"+i).textContent=txt; $("int"+i).textContent=t!=null?brl0(t):"conferir nota"; $("inp"+i).textContent=pct(v/tot*100,0);
+    if(x.tr==="dif"){difV+=v;difT+=t;}});
+  $("inK").innerHTML=kpi(brl0(tot===1?0:tot),"custo total informado")+kpi(brl0(difV),"compras com diferimento","hl")+kpi(pct(difV/tot*100,0),"participação do diferimento no custo")+kpi(brl0(difT),"tributo que não sai do caixa na compra");
+  const rk=INS.map((x,i)=>({n:x.n,v:x.tr==="dif"?vals[i]:0})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v), mx=rk.length?rk[0].v:1;
+  $("inR").innerHTML=rk.length?rk.map(x=>`<div class="rk"><span>${esc(x.n)}</span><span class="bar" style="width:${(x.v/mx*100).toFixed(1)}%" data-tip="${esc(x.n)}: ${esc(brl0(x.v))}, ${pct(x.v/tot*100,0)} do custo"></span><span class="n">${brl0(x.v)}</span></div>`).join(""):`<p class="note">Nenhuma compra com diferimento informada.</p>`;
+}
+
+/* ---------- ligação ---------- */
+["ncC","ncV","ncA","ncP"].forEach(id=>{$(id).addEventListener("input",drawNC);$(id).addEventListener("change",drawNC);});
+["enR","enP","enI","enB","enL"].forEach(id=>$(id).addEventListener("input",drawEN));
+["ivV","ivT","ivA","ivD","ivC"].forEach(id=>$(id).addEventListener("input",drawIV));
+["grC","grV","grAc","grAv","grD","grP"].forEach(id=>$(id).addEventListener("input",drawGR));
+$("inA").addEventListener("input",()=>drawIN(false));
+drawTL();drawNC();drawEN();drawIV();drawGR();drawOP();drawIN(true);
+})();
+</script>
+</body>
+</html>
