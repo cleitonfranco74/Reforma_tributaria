@@ -313,13 +313,23 @@ footer p{max-width:none}
     <div class="card"><h3>Não entram no cálculo</h3><ul class="clean"><li>Receita de contrato de integração</li><li>Venda de máquinas, equipamentos e bens usados na produção</li><li>Venda da terra nua</li><li>Adiantamentos de venda futura, antes da entrega</li></ul></div>
     <div class="card"><h3>Planejar a receita</h3><p style="color:var(--ink-2)"><b>Olhar para trás:</b> receita, compradores e meses de entrega; separar o que não entra no limite; examinar compras e investimentos. <b>Olhar para frente:</b> projetar área, produtividade, preços, animais e contratos com entrega prevista.</p></div>
   </div>
-  <div class="card"><div class="blk">O dilema do regime</div><h3>O crédito é mesmo uma vantagem?</h3>
-    <div class="cmp">
-      <div class="card"><h3>Cenário 1: contribuinte</h3><ul class="clean"><li>Compra: R$ 3.300 (R$ 3.000 de custo + R$ 300 de IBS/CBS) · R$ 300 viram crédito</li><li>Venda: R$ 6.600 (R$ 600 de débito)</li><li>Apuração: débito 600 − crédito 300 = R$ 300 de imposto</li></ul><div class="res">6.600 − 3.300 − 300 = R$ 3.000</div><p class="note">Pagou antes, compensou depois: maior pressão no caixa.</p></div>
-      <div class="card"><h3>Cenário 2: não contribuinte</h3><ul class="clean"><li>Compra: R$ 3.000 (só o custo), sem desembolso de tributo na entrada</li><li>Venda: R$ 6.600 (R$ 600 de débito)</li><li>Apuração: débito 600 − crédito presumido 50 = R$ 550</li></ul><div class="res">6.600 − 3.000 − 550 = R$ 3.050</div><p class="note">Menor desembolso inicial.</p></div>
+  <div class="card" id="dilema"><div class="blk">O dilema do regime</div><h3>O crédito é mesmo uma vantagem?</h3>
+    <p style="color:var(--ink-2)">Compare o mesmo negócio nos dois regimes, separando a conta do <b>produtor</b> da conta do <b>comprador</b>. O produtor não contribuinte não recolhe IBS e CBS nas vendas e não apropria créditos nas compras; quem pode ter crédito é o comprador do regime regular, o crédito presumido.</p>
+    <div class="sim">
+      <div class="fields">
+        <div class="field"><label for="dlC">Custo dos insumos<small>sem tributo, R$</small></label><input id="dlC" type="number" min="0" step="100" value="3000"></div>
+        <div class="field"><label for="dlV">Preço de venda da produção<small>sem tributo, R$</small></label><input id="dlV" type="number" min="0" step="100" value="6000"></div>
+        <div class="field"><label for="dlA">Alíquota IBS/CBS<small>% · exemplo dos slides: 10%</small></label><input id="dlA" type="number" min="0" max="40" step="0.1" value="10"></div>
+        <div class="field"><label for="dlP">Crédito presumido do comprador<small>% do preço · hipotético</small></label><input id="dlP" type="number" min="0" max="40" step="0.1" value="1"></div>
+        <label class="chk"><input id="dlD" type="checkbox" checked> Insumos comprados com diferimento (Anexo IX)</label>
+        <p class="note">O percentual do crédito presumido é divulgado por ato conjunto até setembro e vale a partir de janeiro do ano seguinte. Para 2027, a apresentação não localizou o percentual em ato oficial até 17/10/2026; por isso o valor acima é hipotético.</p>
+      </div>
+      <div class="out">
+        <div class="cmp" id="dlCmp"></div>
+        <div class="verdict" id="dlMsg"></div>
+      </div>
     </div>
-    <p class="note">Números didáticos da apresentação. O produtor não contribuinte não recolhe IBS e CBS nas vendas nessa condição e não apropria créditos ordinários; o comprador do regime regular pode apropriar <b>crédito presumido</b>, com documento fiscal e pagamento confirmado. O percentual é divulgado por ato conjunto até setembro e vale a partir de janeiro do ano seguinte; para 2027, a apresentação não localizou o percentual em ato oficial até 17/10/2026.</p>
-    <p class="law">LC nº 214/2025, arts. 164 e 168; Decreto nº 12.955/2026, arts. 239, 245 e 247.</p>
+    <p class="law">LC nº 214/2025, arts. 138, 164 e 168; Decreto nº 12.955/2026, arts. 239, 245 e 247. Valores didáticos.</p>
   </div>
 </section>
 
@@ -681,13 +691,41 @@ function drawIN(first){
   $("inR").innerHTML=rk.length?rk.map(x=>`<div class="rk"><span>${esc(x.n)}</span><span class="bar" style="width:${(x.v/mx*100).toFixed(1)}%" data-tip="${esc(x.n)}: ${esc(brl0(x.v))}, ${pct(x.v/tot*100,0)} do custo"></span><span class="n">${brl0(x.v)}</span></div>`).join(""):`<p class="note">Nenhuma compra com diferimento informada.</p>`;
 }
 
+
+/* ---------- dilema do regime ---------- */
+function drawDL(){
+  const C=val("dlC"),V=val("dlV"),a=val("dlA")/100,pp=val("dlP")/100,dif=$("dlD").checked;
+  // produtor contribuinte: cobra o tributo por fora, credita o tributo dos insumos, recolhe a diferença
+  const tC=C*a, tV=V*a, rec1=Math.max(tV-tC,0), res1=(V+tV)-(C+tC)-rec1;
+  // produtor não contribuinte: vende sem IBS/CBS, sem crédito; insumo com diferimento sai sem tributo, sem diferimento o tributo vira custo
+  const pagoIns2=dif?C:C+tC, res2=V-pagoIns2;
+  // comprador do regime regular: custo líquido = valor pago − crédito
+  const liq1=(V+tV)-tV, cp=V*pp, liq2=V-cp;
+  $("dlCmp").innerHTML=`<div class="card"><h3>Cenário 1: produtor contribuinte</h3><ul class="clean">
+      <li>Compra: ${brl0(C+tC)} (${brl0(C)} de custo + ${brl0(tC)} de IBS/CBS), e ${brl0(tC)} viram crédito</li>
+      <li>Venda: recebe ${brl0(V+tV)} (${brl0(V)} de preço + ${brl0(tV)} de débito, por fora)</li>
+      <li>Apuração: débito ${brl0(tV)} − crédito ${brl0(tC)} = <b>${brl0(rec1)} a recolher</b></li></ul>
+      <div class="res">${nf(0).format(V+tV)} − ${nf(0).format(C+tC)} − ${nf(0).format(rec1)} = ${brl0(res1)}</div>
+      <p class="note">Adianta ${brl0(tC)} de tributo na compra e compensa depois: mais pressão no caixa.</p></div>
+    <div class="card"><h3>Cenário 2: produtor não contribuinte</h3><ul class="clean">
+      <li>Compra: ${brl0(pagoIns2)} ${dif?"(só o custo, com diferimento)":`(${brl0(C)} + ${brl0(tC)} de tributo que vira custo, sem crédito)`}</li>
+      <li>Venda: recebe ${brl0(V)}, <b>sem IBS/CBS</b></li>
+      <li>Apuração: não recolhe IBS/CBS e não apropria créditos</li></ul>
+      <div class="res">${nf(0).format(V)} − ${nf(0).format(pagoIns2)} = ${brl0(res2)}</div>
+      <p class="note">${dif?"Menor desembolso na entrada, sem tributo a compensar.":"Sem diferimento, o tributo pago nos insumos fica como custo."}</p></div>`;
+  const m=$("dlMsg"), d=res2-res1;
+  m.className="verdict "+(Math.abs(d)<0.5?"ok":d<0?"w":"ok");
+  m.innerHTML=`${Math.abs(d)<0.5?"O resultado do produtor é o mesmo nos dois regimes":d>0?`O não contribuinte fica com ${brl0(d)} a mais`:`O não contribuinte fica com ${brl0(-d)} a menos`}: ${brl0(res1)} como contribuinte e ${brl0(res2)} como não contribuinte.
+    <p><b>Para o comprador</b>, o custo líquido é o valor pago menos o crédito: comprando do contribuinte, paga ${brl0(V+tV)} e credita ${brl0(tV)} (custo líquido de ${brl0(liq1)}); comprando do não contribuinte, paga ${brl0(V)} e credita o presumido de ${brl0(cp)} (custo líquido de ${brl0(liq2)}). Na hora de negociar, compare as ofertas pelo custo líquido e confira se o comprador cumpre os requisitos do crédito presumido (documento fiscal e pagamento confirmado).</p>`;
+}
+["dlC","dlV","dlA","dlP","dlD"].forEach(id=>{$(id).addEventListener("input",drawDL);$(id).addEventListener("change",drawDL);});
 /* ---------- ligação ---------- */
 ["ncC","ncV","ncA","ncP"].forEach(id=>{$(id).addEventListener("input",drawNC);$(id).addEventListener("change",drawNC);});
 ["enR","enP","enI","enB","enL"].forEach(id=>$(id).addEventListener("input",drawEN));
 ["ivV","ivT","ivA","ivD","ivC"].forEach(id=>$(id).addEventListener("input",drawIV));
 ["grC","grV","grAc","grAv","grD","grP"].forEach(id=>$(id).addEventListener("input",drawGR));
 $("inA").addEventListener("input",()=>drawIN(false));
-drawTL();drawNC();drawEN();drawIV();drawGR();drawOP();drawIN(true);
+drawTL();drawNC();drawEN();drawDL();drawIV();drawGR();drawOP();drawIN(true);
 })();
 </script>
 </body>
