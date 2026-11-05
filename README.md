@@ -1,7 +1,7 @@
 # Reforma tributária no agro
 
 Página de estudo e simulação sobre o IBS e a CBS para o produtor rural, construída a partir dos slides
-de uma apresentação sobre a reforma tributária no agro. Abra [`index.html`](index.html) no navegador;
+da apresentação de José Cristovão (Sistema Famato) sobre a reforma tributária no agro. Abra [`index.html`](index.html) no navegador;
 não é preciso instalar nada.
 
 ## Conteúdo
@@ -16,10 +16,15 @@ não é preciso instalar nada.
 - **Contribuinte:** limite de R$ 3,6 milhões, o que entra e o que não entra na receita, integração e
   participação societária, regra dos 20% de excesso, com simulador; o dilema do regime e o crédito
   presumido do comprador.
+- **Arrendamento e parceria:** quando o arrendamento é tributado (receita acima de R$ 240 mil e mais de
+  3 imóveis distintos), alíquota de 8,4% (redução de 70%) com simulador; parceria rural e síntese do
+  enquadramento, com a exceção do imposto diferido da etapa anterior.
 - **Insumos:** Anexo IX, bens passíveis de diferimento (NCM), diesel, energia, serviços e máquinas.
 - **Venda e contratos:** separação entre preço e tributo, fato gerador, atos cooperados, cláusulas de
   risco e roteiro de revisão de contratos.
 - **Exportação:** exportação indireta via comercial exportadora, prazo de 180 dias e CFOP.
+- **Classificação fiscal:** o caso dos ovos (0407.2 com alíquota zero, 0407.1 com 40%, 0408.9).
+- **O produtor está preparado?** Resultados da autorregularização (Receita Federal).
 
 ## Gestão tributária da fazenda
 

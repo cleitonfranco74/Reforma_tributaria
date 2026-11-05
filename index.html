@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Reforma tributária no agro: IBS e CBS para o produtor rural, com simuladores de crédito, enquadramento, investimentos, capital de giro, painel de alertas e insumos.">
+<meta name="description" content="Reforma tributária no agro: IBS e CBS para o produtor rural, com simuladores de crédito, enquadramento, arrendamento, investimentos, capital de giro, painel de alertas e insumos.">
 <title>Reforma Tributária no Agro</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -205,8 +205,8 @@ footer p{max-width:none}
 <nav class="top" aria-label="Seções"><div class="in">
   <a class="brand" href="#inicio">Reforma <span>Agro</span></a>
   <a class="l" href="#aliquotas">Alíquotas</a><a class="l" href="#transicao">Transição</a><a class="l" href="#agir">Agir agora</a>
-  <a class="l" href="#credito">Crédito</a><a class="l" href="#contribuinte">Contribuinte</a><a class="l" href="#insumos">Insumos</a>
-  <a class="l" href="#venda">Venda e contratos</a><a class="l" href="#exportacao">Exportação</a><a class="l g" href="#gestao">Gestão da fazenda</a>
+  <a class="l" href="#credito">Crédito</a><a class="l" href="#contribuinte">Contribuinte</a><a class="l" href="#arrendamento">Arrendamento</a><a class="l" href="#insumos">Insumos</a>
+  <a class="l" href="#venda">Venda e contratos</a><a class="l" href="#exportacao">Exportação</a><a class="l" href="#preparado">Preparado?</a><a class="l g" href="#gestao">Gestão da fazenda</a>
 </div></nav>
 
 <header class="hero" id="inicio">
@@ -313,6 +313,17 @@ footer p{max-width:none}
     <div class="card"><h3>Não entram no cálculo</h3><ul class="clean"><li>Receita de contrato de integração</li><li>Venda de máquinas, equipamentos e bens usados na produção</li><li>Venda da terra nua</li><li>Adiantamentos de venda futura, antes da entrega</li></ul></div>
     <div class="card"><h3>Planejar a receita</h3><p style="color:var(--ink-2)"><b>Olhar para trás:</b> receita, compradores e meses de entrega; separar o que não entra no limite; examinar compras e investimentos. <b>Olhar para frente:</b> projetar área, produtividade, preços, animais e contratos com entrega prevista.</p></div>
   </div>
+  <div class="g2">
+    <div class="card"><div class="blk">Síntese do enquadramento</div>
+      <div class="cmp">
+        <div><h3 style="font-size:1rem;margin-bottom:6px">Igual ou acima de R$ 3.600.000</h3><ul class="clean ok"><li>Contribuinte regular</li><li>Terá débito e crédito</li><li>Regime da não cumulatividade</li></ul></div>
+        <div><h3 style="font-size:1rem;margin-bottom:6px">Abaixo de R$ 3.600.000</h3><ul class="clean"><li>Não contribuinte (salvo se optar)</li><li>Não terá débito e crédito</li><li>Cede crédito presumido ao comprador</li></ul></div>
+      </div>
+      <div class="al w"><span class="sv">exceção</span><div><b>A depender do caso, terá que pagar o imposto diferido da etapa anterior.</b></div></div></div>
+    <div class="card"><div class="blk">Parceria rural</div><h3>Parceiro outorgante (dono) e parceiro outorgado (possuidor)</h3>
+      <ul class="clean"><li><b>Até R$ 3,6 milhões:</b> não serão contribuintes.</li><li><b>Acima de R$ 3,6 milhões:</b> serão contribuintes.</li></ul>
+      <p class="note">O limite é o mesmo do produtor rural; use o simulador acima com a receita de cada parceiro.</p></div>
+  </div>
   <div class="card" id="dilema"><div class="blk">O dilema do regime</div><h3>O crédito é mesmo uma vantagem?</h3>
     <p style="color:var(--ink-2)">Compare o mesmo negócio nos dois regimes, separando a conta do <b>produtor</b> da conta do <b>comprador</b>. O produtor não contribuinte não recolhe IBS e CBS nas vendas e não apropria créditos nas compras; quem pode ter crédito é o comprador do regime regular, o crédito presumido.</p>
     <div class="sim">
@@ -330,6 +341,22 @@ footer p{max-width:none}
       </div>
     </div>
     <p class="law">LC nº 214/2025, arts. 138, 164 e 168; Decreto nº 12.955/2026, arts. 239, 245 e 247. Valores didáticos.</p>
+  </div>
+</section>
+
+<!-- ================= ARRENDAMENTO ================= -->
+<section id="arrendamento">
+  <div class="head"><div class="blk">Arrendamento</div><h2>Qual será o imposto devido pelo arrendador do imóvel rural?</h2>
+    <p>O arrendamento passa a ser tributado quando, no ano, a receita total com essas operações exceder <b>R$ 240.000</b> e elas tiverem por objeto <b>mais de 3 bens imóveis distintos</b>. A alíquota é de <b>8,4%</b>, com redução de 70% sobre a alíquota de referência de 28%.</p></div>
+  <div class="card sim">
+    <div class="fields">
+      <div class="field"><label for="arR">Receita anual com arrendamentos<small>R$</small></label><input id="arR" type="number" min="0" step="10000" value="300000"></div>
+      <div class="field"><label for="arN">Imóveis distintos arrendados<small>quantidade</small></label><input id="arN" type="number" min="0" step="1" value="4"></div>
+      <div class="field"><label for="arA">Alíquota<small>% · 28% com redução de 70% = 8,4%</small></label><input id="arA" type="number" min="0" max="40" step="0.1" value="8.4"></div>
+      <div class="years" role="group" aria-label="Exemplos"><button type="button" data-ar="300000,4">R$ 300 mil · 4 imóveis</button><button type="button" data-ar="300000,2">R$ 300 mil · 2 imóveis</button><button type="button" data-ar="200000,5">R$ 200 mil · 5 imóveis</button></div>
+    </div>
+    <div class="out"><div class="kpis" id="arK"></div><div class="verdict" id="arMsg"></div>
+      <p class="law">LC nº 214/2025, art. 261, parágrafo único (redução de 70%).</p></div>
   </div>
 </section>
 
@@ -360,6 +387,13 @@ footer p{max-width:none}
       </ul>
       <p class="law">LC nº 214/2025, arts. 28, 47, 57, 108 a 110, 138 e 180; Decreto nº 12.955/2026, arts. 196, 197 e 267.</p></div>
   </div>
+  <div class="card"><div class="blk">A classificação fiscal muda a tributação</div><h3>O caso dos ovos</h3>
+    <div class="g3">
+      <div class="al ok"><span class="sv">zero</span><div><b>Ovos da subposição 0407.2 da NCM/SH</b><p>Alíquota reduzida a zero. Art. 148 da LC nº 214/2025.</p></div></div>
+      <div class="al w"><span class="sv">40%</span><div><b>Ovos da subposição 0407.1 da NCM/SH</b><p>Tributação em 40% da alíquota (ovos fertilizados, insumo do Anexo IX). Art. 138 da LC nº 214/2025.</p></div></div>
+      <div class="al i"><span class="sv">?</span><div><b>Ovo líquido ou ovo integral · subposição 0408.9</b><p>A apresentação deixa a pergunta para o público: qual é a tributação? Confira a classificação do produto e o anexo aplicável antes de emitir a nota.</p></div></div>
+    </div>
+    <p class="note">O mesmo produto pode ter tratamentos diferentes conforme a subposição da NCM. Por isso o NCM correto na nota é o primeiro passo para saber a alíquota.</p></div>
 </section>
 
 <!-- ================= VENDA ================= -->
@@ -461,10 +495,22 @@ footer p{max-width:none}
   </div>
 </section>
 
+<!-- ================= PREPARADO ================= -->
+<section id="preparado">
+  <div class="head"><div class="blk">Conformidade</div><h2>O produtor rural está preparado para a reforma?</h2>
+    <p>A experiência da autorregularização mostra o valor de agir antes da autuação: notificados com antecedência, a maioria dos produtores regularizou a situação sem multa.</p></div>
+  <div class="card"><div class="blk">Autorregularização · resultados</div><h3>Alto engajamento e eficácia na conversão de conformidade</h3>
+    <div class="g2" style="align-items:center">
+      <div id="funil"></div>
+      <div class="kpis"><div class="kpi hl"><span class="v">83,2%</span><span class="k">taxa de sucesso</span></div><div class="kpi"><span class="v">R$ 1,2 bi</span><span class="k">valor arrecadado e regularizado</span></div></div>
+    </div>
+    <p class="law">Fonte: Receita Federal do Brasil, conforme a apresentação.</p></div>
+</section>
+
 <div class="disc">Material didático elaborado a partir de uma apresentação sobre a reforma tributária no agro. As alíquotas e os exemplos são premissas ilustrativas. Antes de decidir, confira a legislação vigente (EC nº 132/2023, LC nº 214/2025 e Decreto nº 12.955/2026), os atos posteriores e a orientação do seu contador.</div>
 
 <footer>
-  <p><b>Reforma tributária no agro</b> · página de estudo e simulação. Fontes citadas nos slides: EC nº 132/2023, LC nº 214/2025, Decreto nº 12.955/2026, Código Civil e Convênio ICMS nº 190/17; figura do período de transição elaborada pela CNA.</p>
+  <p><b>Reforma tributária no agro</b> · página de estudo e simulação, a partir da apresentação de José Cristovão (Sistema Famato, <a href="https://sistemafamato.org.br" target="_blank" rel="noopener">sistemafamato.org.br</a>), com slides que reproduzem materiais da CNA e da Confraria do Agro. Fontes citadas nos slides: EC nº 132/2023, LC nº 214/2025, Decreto nº 12.955/2026, Código Civil e Convênio ICMS nº 190/17; figura do período de transição elaborada pela CNA.</p>
 </footer>
 </div>
 <div id="tip" hidden style="position:fixed;pointer-events:none;z-index:20;background:var(--ink);color:var(--bg);font-size:.8rem;padding:6px 9px;border-radius:5px"></div>
@@ -712,20 +758,40 @@ function drawDL(){
       <li>Venda: recebe ${brl0(V)}, <b>sem IBS/CBS</b></li>
       <li>Apuração: não recolhe IBS/CBS e não apropria créditos</li></ul>
       <div class="res">${nf(0).format(V)} − ${nf(0).format(pagoIns2)} = ${brl0(res2)}</div>
-      <p class="note">${dif?"Menor desembolso na entrada, sem tributo a compensar.":"Sem diferimento, o tributo pago nos insumos fica como custo."}</p></div>`;
+      <p class="note">${dif?"Menor desembolso na entrada, sem tributo a compensar. Exceção: a depender do caso, o não contribuinte terá que pagar o imposto diferido da etapa anterior.":"Sem diferimento, o tributo pago nos insumos fica como custo."}</p></div>`;
   const m=$("dlMsg"), d=res2-res1;
   m.className="verdict "+(Math.abs(d)<0.5?"ok":d<0?"w":"ok");
   m.innerHTML=`${Math.abs(d)<0.5?"O resultado do produtor é o mesmo nos dois regimes":d>0?`O não contribuinte fica com ${brl0(d)} a mais`:`O não contribuinte fica com ${brl0(-d)} a menos`}: ${brl0(res1)} como contribuinte e ${brl0(res2)} como não contribuinte.
     <p><b>Para o comprador</b>, o custo líquido é o valor pago menos o crédito: comprando do contribuinte, paga ${brl0(V+tV)} e credita ${brl0(tV)} (custo líquido de ${brl0(liq1)}); comprando do não contribuinte, paga ${brl0(V)} e credita o presumido de ${brl0(cp)} (custo líquido de ${brl0(liq2)}). Na hora de negociar, compare as ofertas pelo custo líquido e confira se o comprador cumpre os requisitos do crédito presumido (documento fiscal e pagamento confirmado).</p>`;
 }
 ["dlC","dlV","dlA","dlP","dlD"].forEach(id=>{$(id).addEventListener("input",drawDL);$(id).addEventListener("change",drawDL);});
+/* ---------- arrendamento ---------- */
+function drawAR(){
+  const R=val("arR"),N=Math.floor(val("arN")),a=val("arA")/100;
+  const c1=R>240000,c2=N>3,trib=c1&&c2,imp=trib?R*a:0;
+  $("arK").innerHTML=kpi(c1?"sim":"não","receita acima de R$ 240 mil",c1?"w":"")+kpi(c2?"sim":"não","mais de 3 imóveis distintos",c2?"w":"")+kpi(brl0(imp),"IBS/CBS devido pelo arrendador no ano","hl")+kpi(R>0?brl0(R-imp):"–","receita líquida do tributo");
+  const m=$("arMsg");
+  if(trib){m.className="verdict w";m.innerHTML=`Tributa: ${brl0(R)} × ${pct(a*100)} = ${brl0(imp)} de IBS/CBS no ano.<p>As duas condições foram atendidas. Reveja os contratos de arrendamento para prever quem arca com o tributo e como ele aparece no valor.</p>`;}
+  else{m.className="verdict ok";m.innerHTML=`Não tributa nesta situação.<p>${!c1&&!c2?"A receita não passa de R$ 240 mil e são até 3 imóveis.":!c1?"A receita não passa de R$ 240 mil.":"São até 3 imóveis distintos."} As duas condições precisam ocorrer juntas para o arrendamento ser tributado.</p>`;}
+}
+document.querySelectorAll("[data-ar]").forEach(b=>b.addEventListener("click",()=>{const [r,n]=b.dataset.ar.split(",");$("arR").value=r;$("arN").value=n;drawAR();}));
+["arR","arN","arA"].forEach(id=>$(id).addEventListener("input",drawAR));
+function drawFunil(){
+  const D=[["Contribuintes notificados",1836],["Notificações confirmadas (recebimento)",1564],["Regularizados sem multa",1304]];
+  const W=420,H=210,mx=1836,rowH=62;
+  let g="";D.forEach((d,i)=>{const w=d[1]/mx*(W-20),x=(W-w)/2,y=i*(rowH+8);
+    g+=`<rect x="${x.toFixed(1)}" y="${y}" width="${w.toFixed(1)}" height="${rowH}" rx="6" fill="var(--accent)" opacity="${1-i*0.22}" data-tip="${d[0]}: ${nf(0).format(d[1])}"/>`;
+    g+=`<text x="${W/2}" y="${y+28}" text-anchor="middle" style="font-family:var(--f-display);font-size:22px;font-weight:700;fill:var(--accent-ink)">${nf(0).format(d[1])}</text><text x="${W/2}" y="${y+48}" text-anchor="middle" style="font-size:11px;fill:var(--accent-ink)">${d[0]}</text>`;});
+  $("funil").innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H+4}" role="img" aria-label="Funil: 1.836 notificados, 1.564 confirmados, 1.304 regularizados sem multa">${g}</svg>`;
+}
+
 /* ---------- ligação ---------- */
 ["ncC","ncV","ncA","ncP"].forEach(id=>{$(id).addEventListener("input",drawNC);$(id).addEventListener("change",drawNC);});
 ["enR","enP","enI","enB","enL"].forEach(id=>$(id).addEventListener("input",drawEN));
 ["ivV","ivT","ivA","ivD","ivC"].forEach(id=>$(id).addEventListener("input",drawIV));
 ["grC","grV","grAc","grAv","grD","grP"].forEach(id=>$(id).addEventListener("input",drawGR));
 $("inA").addEventListener("input",()=>drawIN(false));
-drawTL();drawNC();drawEN();drawDL();drawIV();drawGR();drawOP();drawIN(true);
+drawTL();drawNC();drawEN();drawDL();drawAR();drawFunil();drawIV();drawGR();drawOP();drawIN(true);
 })();
 </script>
 </body>
