@@ -180,6 +180,41 @@ form.add{display:grid;grid-template-columns:repeat(6,minmax(0,1fr)) auto;gap:8px
 form.add label{display:grid;gap:3px;font-size:.78rem;color:var(--ink-2)}
 form.add input,form.add select{font:inherit;font-size:.86rem;padding:6px 8px;border-radius:5px;border:1px solid var(--input-line);background:var(--input-bg);color:var(--ink);min-width:0;width:100%}
 
+.msgs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.msg{display:grid;gap:8px;align-content:start;padding:16px;border-radius:10px;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent)}
+.msg .mk{font-family:var(--f-mono);font-size:.74rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.msg p{font-size:.92rem;color:var(--ink-2)} .msg p b{color:var(--ink)}
+.msg a{font-size:.86rem;font-weight:600}
+.roteiro ol{display:grid;gap:8px}
+.roteiro li{color:var(--ink)} .roteiro li a{font-size:.84rem;margin-left:4px;white-space:nowrap}
+.prem{border:2px solid var(--accent)}
+.prem-h{display:flex;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;align-items:flex-end}
+.prem-b{display:grid;gap:12px}
+nav.top a.l.pchip{font-family:var(--f-mono);font-size:.8rem;background:var(--accent-soft);color:var(--accent);font-weight:600}
+small[data-pt]{color:var(--accent)!important}
+@media (max-width:960px){.msgs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.msgs{grid-template-columns:minmax(0,1fr)}}
+.sbody{display:grid;gap:22px}
+.calcrec{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--bg)}
+.calcrec summary{cursor:pointer;font-weight:600;color:var(--accent);font-size:.92rem}
+.calcrec[open]{display:grid;gap:10px}
+table.crt td,table.crt th{padding:6px 6px;font-size:.84rem;white-space:nowrap}
+table.crt input{width:4.6rem;font-family:var(--f-mono);font-size:.84rem;text-align:right;padding:4px 5px;border-radius:4px;border:1px solid var(--input-line);background:var(--input-bg);color:var(--ink)}
+input[readonly]{background:var(--bg)!important;border-style:dashed!important}
+.gl{text-decoration:underline dotted var(--accent);text-underline-offset:3px;text-decoration-thickness:1.5px;cursor:help;border-radius:2px}
+.gl:focus-visible{outline:2px solid var(--accent)}
+#glTip{position:fixed;z-index:30;max-width:300px;background:var(--surface);color:var(--ink);border:1px solid var(--accent);border-radius:8px;padding:10px 12px;font-size:.86rem;line-height:1.45;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+#glTip b{display:block;color:var(--accent);font-family:var(--f-display);margin-bottom:2px}
+dl.gloss{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px;margin:0}
+dl.gloss div{display:grid;gap:2px} dl.gloss dt{font-weight:700;font-family:var(--f-display);font-size:.95rem} dl.gloss dd{margin:0;color:var(--ink-2);font-size:.9rem}
+.sbtn{display:none;justify-self:start;font:inherit;font-size:.86rem;font-weight:600;padding:6px 12px;border-radius:6px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer}
+@media (max-width:700px){
+  .sbtn{display:inline-flex}
+  dl.gloss{grid-template-columns:minmax(0,1fr)}
+  section.col > .sbody{display:none}
+  section.col{padding-block:22px 0}
+  section.col .head p{display:none}
+}
 .disc{border:1px dashed var(--axis);border-radius:10px;padding:14px 16px;font-size:.88rem;color:var(--ink-2)}
 footer{padding-block:40px 40px;margin-top:40px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted);display:grid;gap:8px}
 footer p{max-width:none}
@@ -204,9 +239,10 @@ footer p{max-width:none}
 <div class="wrap">
 <nav class="top" aria-label="Seções"><div class="in">
   <a class="brand" href="#inicio">Reforma <span>Agro</span></a>
-  <a class="l" href="#aliquotas">Alíquotas</a><a class="l" href="#transicao">Transição</a><a class="l" href="#agir">Agir agora</a>
+  <a class="l g" href="#meucaso">Meu caso</a><a class="l pchip" href="#premissa" id="navPrem" title="Premissa de alíquota dos simuladores">4% no agro</a>
+  <a class="l" href="#resumo">Resumo</a><a class="l" href="#aliquotas">Alíquotas</a><a class="l" href="#transicao">Transição</a><a class="l" href="#agir">Agir agora</a>
   <a class="l" href="#credito">Crédito</a><a class="l" href="#contribuinte">Contribuinte</a><a class="l" href="#arrendamento">Arrendamento</a><a class="l" href="#insumos">Insumos</a>
-  <a class="l" href="#venda">Venda e contratos</a><a class="l" href="#exportacao">Exportação</a><a class="l" href="#pratica">Teoria e prática</a><a class="l" href="#preparado">Preparado?</a><a class="l g" href="#gestao">Gestão da fazenda</a>
+  <a class="l" href="#venda">Venda e contratos</a><a class="l" href="#exportacao">Exportação</a><a class="l" href="#pratica">Teoria e prática</a><a class="l" href="#preparado">Preparado?</a><a class="l" href="#glossario">Glossário</a><a class="l g" href="#gestao">Gestão da fazenda</a>
 </div></nav>
 
 <header class="hero" id="inicio">
@@ -226,6 +262,67 @@ footer p{max-width:none}
     <p class="note">CBS em 2027: <b>4%</b> no agro (10% na alíquota geral). Alíquotas de referência, usadas como premissa nos exemplos.</p>
   </div>
 </header>
+
+<!-- ================= RESUMO ================= -->
+<section id="resumo" class="resumo">
+  <div class="head"><div class="blk">Resumo em 1 minuto</div><h2>O essencial para o produtor rural</h2></div>
+  <div class="msgs">
+    <div class="msg"><span class="mk">R$ 3,6 mi</span><p><b>Abaixo de R$ 3,6 milhões de receita, em regra você não é contribuinte</b> do IBS e da CBS: não recolhe na venda e não toma crédito nas compras. Pode optar por ser, se compensar.</p><a href="#contribuinte">Ver o enquadramento</a></div>
+    <div class="msg"><span class="mk">art. 47</span><p><b>Se for contribuinte, o tributo vem “por fora” do preço e o crédito só vale com o fornecedor pago.</b> Nota fiscal sozinha não libera mais o crédito.</p><a href="#credito">Ver como funciona o crédito</a></div>
+    <div class="msg"><span class="mk">2027</span><p><b>Revise já os contratos com entrega em 2027.</b> Separe o preço da produção dos tributos e cuidado com cláusulas de preço fixo e desconto de tributos.</p><a href="#venda">Ver contratos</a></div>
+    <div class="msg"><span class="mk">caixa</span><p><b>Mapeie os insumos com diferimento</b> (fertilizantes, defensivos, sementes): eles evitam desembolso de tributo na compra e aliviam o caixa da safra.</p><a href="#gestinsumos">Ver os insumos</a></div>
+    <div class="msg"><span class="mk">todo mês</span><p><b>A partir de 2027: CNPJ do produtor e apuração assistida.</b> Confira a apuração no prazo: não se manifestar vale como confirmação do saldo.</p><a href="#painel">Ver o painel de alertas</a></div>
+  </div>
+</section>
+
+<!-- ================= MEU CASO ================= -->
+<section id="meucaso">
+  <div class="head"><div class="blk">Qual é o meu caso?</div><h2>Responda e veja só o que vale para você</h2>
+    <p>Poucas perguntas. A página indica o enquadramento provável e monta um roteiro com as seções e as providências que se aplicam à sua situação.</p></div>
+  <div class="card sim">
+    <div class="fields">
+      <div class="field"><label for="mcR">Receita anual da atividade rural<small>R$ · sem integração, máquinas, terra e adiantamentos</small></label><input id="mcR" type="number" min="0" step="50000" value="2500000"></div>
+      <details class="calcrec" id="mcCalc"><summary>Calcular a receita pela produção (hectares, sacas, arrobas)</summary>
+        <div class="tw"><table class="crt"><thead><tr><th>Atividade</th><th class="n">Quantidade</th><th class="n">Produtividade</th><th class="n">Preço</th><th class="n">Receita</th></tr></thead><tbody>
+          <tr><td>Soja</td><td class="n"><input id="rcSha" type="number" min="0" step="10" value="500"> ha</td><td class="n"><input id="rcSpr" type="number" min="0" step="1" value="58"> sc/ha</td><td class="n">R$ <input id="rcSp" type="number" min="0" step="1" value="125"> /sc</td><td class="n" id="rcSr"></td></tr>
+          <tr><td>Milho safrinha</td><td class="n"><input id="rcMha" type="number" min="0" step="10" value="400"> ha</td><td class="n"><input id="rcMpr" type="number" min="0" step="1" value="105"> sc/ha</td><td class="n">R$ <input id="rcMp" type="number" min="0" step="1" value="48"> /sc</td><td class="n" id="rcMr"></td></tr>
+          <tr><td>Algodão</td><td class="n"><input id="rcAha" type="number" min="0" step="10" value="0"> ha</td><td class="n"><input id="rcApr" type="number" min="0" step="1" value="120"> @/ha</td><td class="n">R$ <input id="rcAp" type="number" min="0" step="1" value="130"> /@</td><td class="n" id="rcAr"></td></tr>
+          <tr><td>Boi</td><td class="n"><input id="rcBc" type="number" min="0" step="10" value="0"> cab.</td><td class="n"><input id="rcBpr" type="number" min="0" step="0.5" value="18"> @/cab.</td><td class="n">R$ <input id="rcBp" type="number" min="0" step="1" value="300"> /@</td><td class="n" id="rcBr"></td></tr>
+        </tbody><tfoot><tr><td colspan="4"><b>Receita anual estimada</b></td><td class="n"><b id="rcT"></b></td></tr></tfoot></table></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" class="btn pri" id="rcUse">Usar esta receita</button><span class="note">Valores de exemplo: troque pela sua área, produtividade e preço.</span></div>
+      </details>
+      <div class="field"><label for="mcT">Você é</label><select id="mcT"><option value="pf">Pessoa física</option><option value="pj">Pessoa jurídica</option></select></div>
+      <div class="field"><label for="mcI">Produtor integrado?<small>contrato de integração com agroindústria</small></label><select id="mcI"><option value="0">Não</option><option value="1">Sim</option></select></div>
+      <div class="field"><label for="mcC">Vende para cooperativa da qual é associado?</label><select id="mcC"><option value="0">Não</option><option value="1">Sim</option></select></div>
+      <div class="field"><label for="mcA">Arrenda terra para terceiros?<small>receita anual de arrendamento, R$ (0 = não)</small></label><input id="mcA" type="number" min="0" step="10000" value="0"></div>
+      <div class="field"><label for="mcAn">Imóveis arrendados<small>quantidade</small></label><input id="mcAn" type="number" min="0" step="1" value="0"></div>
+      <div class="field"><label for="mcE">Vende para exportação via trading ou comercial exportadora?</label><select id="mcE"><option value="0">Não</option><option value="1">Sim</option></select></div>
+      <div class="field"><label for="mcK">Tem contratos de venda com entrega em 2027?</label><select id="mcK"><option value="1">Sim</option><option value="0">Não</option></select></div>
+      <div class="field"><label for="mcM">Pretende comprar máquinas nos próximos anos?</label><select id="mcM"><option value="0">Não</option><option value="1">Sim</option></select></div>
+    </div>
+    <div class="out">
+      <div class="verdict" id="mcV"></div>
+      <div class="card roteiro"><h3>Seu roteiro</h3><ol class="clean" id="mcL"></ol></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn pri" id="mcUse">Levar meus dados para os simuladores</button></div>
+      <p class="note">Orientação geral a partir dos slides. Casos específicos (grupos econômicos, participações, atividades mistas) precisam de análise do contador.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PREMISSA ================= -->
+<section id="premissa">
+  <div class="card prem">
+    <div class="prem-h"><div><div class="blk">Premissa de alíquota da página</div><h3>Qual alíquota usar nos simuladores?</h3>
+      <p class="note">A escolha vale para todos os simuladores. Você ainda pode ajustar cada campo depois; mudar a premissa reajusta todos.</p></div>
+      <div class="seg" id="prSeg" role="group" aria-label="Premissa de alíquota">
+        <button type="button" data-p="y2027">2027 · 4% no agro</button><button type="button" data-p="plena">Plena · 11,2% no agro</button><button type="button" data-p="custom">Personalizada</button>
+      </div></div>
+    <div class="prem-b">
+      <div class="field" id="prCustom" hidden><label for="prG">Alíquota geral de referência<small>%</small></label><input id="prG" type="number" min="0" max="40" step="0.1" value="28"></div>
+      <div class="kpis" id="prK"></div>
+    </div>
+  </div>
+</section>
 
 <!-- ================= TRANSIÇÃO ================= -->
 <section id="transicao">
@@ -269,8 +366,11 @@ footer p{max-width:none}
   <div class="card sim">
     <div class="fields">
       <div class="field"><label for="ncC">Compra de insumos<small>valor sem tributo, R$</small></label><input id="ncC" type="number" min="0" step="100" value="10000"></div>
-      <div class="field"><label for="ncV">Venda da produção<small>valor sem tributo, R$</small></label><input id="ncV" type="number" min="0" step="100" value="50000"></div>
-      <div class="field"><label for="ncA">Alíquota IBS/CBS<small>% (exemplo dos slides: 10%)</small></label><input id="ncA" type="number" min="0" max="40" step="0.1" value="10"></div>
+      <div class="field"><label for="ncU">Produto vendido</label><select id="ncU"><option value="sc_soja">Soja (sacas de 60 kg)</option><option value="sc_milho">Milho (sacas de 60 kg)</option><option value="arroba_boi">Boi (arrobas)</option><option value="arroba_alg">Algodão em pluma (arrobas)</option><option value="rs">Valor em R$</option></select></div>
+      <div class="field" id="ncQf"><label for="ncQ">Quantidade vendida<small id="ncQu">sacas</small></label><input id="ncQ" type="number" min="0" step="10" value="400"></div>
+      <div class="field" id="ncPf"><label for="ncPu">Preço por unidade<small id="ncPuu">R$/saca, sem tributo</small></label><input id="ncPu" type="number" min="0" step="0.5" value="125"></div>
+      <div class="field"><label for="ncV">Venda da produção<small id="ncVs">valor sem tributo, R$</small></label><input id="ncV" type="number" min="0" step="100" value="50000"></div>
+      <div class="field"><label for="ncA">Alíquota IBS/CBS<small data-pt="agro"></small></label><input id="ncA" type="number" min="0" max="40" step="0.1" value="10"></div>
       <label class="chk"><input id="ncP" type="checkbox" checked> O fornecedor dos insumos já foi pago (débito dele extinto)</label>
       <p class="law">LC nº 214/2025, art. 47: crédito condicionado à extinção do débito.</p>
     </div>
@@ -339,7 +439,7 @@ footer p{max-width:none}
       <div class="fields">
         <div class="field"><label for="dlC">Custo dos insumos<small>sem tributo, R$</small></label><input id="dlC" type="number" min="0" step="100" value="3000"></div>
         <div class="field"><label for="dlV">Preço de venda da produção<small>sem tributo, R$</small></label><input id="dlV" type="number" min="0" step="100" value="6000"></div>
-        <div class="field"><label for="dlA">Alíquota IBS/CBS<small>% · exemplo dos slides: 10%</small></label><input id="dlA" type="number" min="0" max="40" step="0.1" value="10"></div>
+        <div class="field"><label for="dlA">Alíquota IBS/CBS<small data-pt="agro"></small></label><input id="dlA" type="number" min="0" max="40" step="0.1" value="10"></div>
         <div class="field"><label for="dlP">Crédito presumido do comprador<small>% do preço · hipotético</small></label><input id="dlP" type="number" min="0" max="40" step="0.1" value="1"></div>
         <label class="chk"><input id="dlD" type="checkbox" checked> Insumos comprados com diferimento (Anexo IX)</label>
         <p class="note">O percentual do crédito presumido é divulgado por ato conjunto até setembro e vale a partir de janeiro do ano seguinte. Para 2027, a apresentação não localizou o percentual em ato oficial até 17/10/2026; por isso o valor acima é hipotético.</p>
@@ -361,7 +461,7 @@ footer p{max-width:none}
     <div class="fields">
       <div class="field"><label for="arR">Receita anual com arrendamentos<small>R$</small></label><input id="arR" type="number" min="0" step="10000" value="300000"></div>
       <div class="field"><label for="arN">Imóveis distintos arrendados<small>quantidade</small></label><input id="arN" type="number" min="0" step="1" value="4"></div>
-      <div class="field"><label for="arA">Alíquota<small>% · 28% com redução de 70% = 8,4%</small></label><input id="arA" type="number" min="0" max="40" step="0.1" value="8.4"></div>
+      <div class="field"><label for="arA">Alíquota<small data-pt="arr"></small></label><input id="arA" type="number" min="0" max="40" step="0.1" value="8.4"></div>
       <div class="years" role="group" aria-label="Exemplos"><button type="button" data-ar="300000,4">R$ 300 mil · 4 imóveis</button><button type="button" data-ar="300000,2">R$ 300 mil · 2 imóveis</button><button type="button" data-ar="200000,5">R$ 200 mil · 5 imóveis</button></div>
     </div>
     <div class="out"><div class="kpis" id="arK"></div><div class="verdict" id="arMsg"></div>
@@ -438,7 +538,7 @@ footer p{max-width:none}
       <div class="fields">
         <div class="field"><label for="ivV">Valor do investimento<small>sem tributo, R$</small></label><input id="ivV" type="number" min="0" step="10000" value="1000000"></div>
         <div class="field"><label for="ivT">Tratamento da compra</label><select id="ivT"><option value="trib">Compra tributada (contribuinte regular)</option><option value="susp">Bem alcançado pela suspensão</option><option value="zero">Máquina listada · produtor não contribuinte</option></select></div>
-        <div class="field"><label for="ivA">Alíquota IBS/CBS na compra<small>% · 28% é a ilustração dos slides</small></label><input id="ivA" type="number" min="0" max="40" step="0.1" value="28"></div>
+        <div class="field"><label for="ivA">Alíquota IBS/CBS na compra<small data-pt="geral"></small></label><input id="ivA" type="number" min="0" max="40" step="0.1" value="28"></div>
         <div class="field"><label for="ivD">Débitos mensais nas vendas<small>IBS/CBS das vendas, R$/mês</small></label><input id="ivD" type="number" min="0" step="1000" value="40000"></div>
         <div class="field"><label for="ivC">Créditos mensais de insumos<small>já liberados, R$/mês</small></label><input id="ivC" type="number" min="0" step="1000" value="10000"></div>
       </div>
@@ -453,8 +553,8 @@ footer p{max-width:none}
       <div class="fields">
         <div class="field"><label for="grC">Compras da safra<small>insumos e serviços, R$</small></label><input id="grC" type="number" min="0" step="50000" value="2000000"></div>
         <div class="field"><label for="grV">Vendas da safra<small>R$</small></label><input id="grV" type="number" min="0" step="50000" value="3200000"></div>
-        <div class="field"><label for="grAc">Alíquota nas compras<small>% efetiva</small></label><input id="grAc" type="number" min="0" max="40" step="0.1" value="4"></div>
-        <div class="field"><label for="grAv">Alíquota nas vendas<small>% · 4% é a premissa de 2027</small></label><input id="grAv" type="number" min="0" max="40" step="0.1" value="4"></div>
+        <div class="field"><label for="grAc">Alíquota nas compras<small data-pt="agro"></small></label><input id="grAc" type="number" min="0" max="40" step="0.1" value="4"></div>
+        <div class="field"><label for="grAv">Alíquota nas vendas<small data-pt="agro"></small></label><input id="grAv" type="number" min="0" max="40" step="0.1" value="4"></div>
         <div class="field"><label for="grD">Compras com diferimento<small>% das compras</small></label><input id="grD" type="number" min="0" max="100" step="1" value="60"></div>
         <div class="field"><label for="grP">Calendário<small>meses de compra e de venda</small></label><select id="grP"><option value="soja">Soja e milho (compras ago–dez, vendas fev–jul)</option><option value="boi">Pecuária (compras e vendas ao longo do ano)</option><option value="uniforme">Uniforme (todos os meses)</option></select></div>
       </div>
@@ -485,7 +585,7 @@ footer p{max-width:none}
 
   <!-- 4. insumos -->
   <div class="card" id="gestinsumos"><div class="blk">4 · Gestão dos insumos</div><h3>Qual a alíquota dos insumos que compro e o que tem mais diferimento</h3>
-    <div class="field" style="max-width:520px"><label for="inA">Alíquota cheia de referência<small>% · insumos do Anexo IX com redução de 60% (28% → 11,2%)</small></label><input id="inA" type="number" min="0" max="40" step="0.1" value="28"></div>
+    <div class="field" style="max-width:520px"><label for="inA">Alíquota cheia de referência<small data-pt="ins"></small></label><input id="inA" type="number" min="0" max="40" step="0.1" value="28"></div>
     <div class="tw"><table class="ins" id="inT"></table></div>
     <div class="kpis" id="inK"></div>
     <div class="g2">
@@ -533,6 +633,13 @@ footer p{max-width:none}
       <div class="kpis"><div class="kpi hl"><span class="v">83,4%</span><span class="k">taxa de sucesso entre os que confirmaram o recebimento (1.304 ÷ 1.564)</span></div><div class="kpi"><span class="v">71,0%</span><span class="k">regularizados sobre o total de notificados (1.304 ÷ 1.836)</span></div><div class="kpi"><span class="v">R$ 1,2 bi</span><span class="k">valor arrecadado e regularizado</span></div></div>
     </div>
     <p class="law">Fonte: Receita Federal do Brasil, conforme a apresentação. Taxas recalculadas a partir do funil: o slide original informava 83,2%, valor que não corresponde a nenhuma das razões entre os números apresentados.</p></div>
+</section>
+
+<!-- ================= GLOSSÁRIO ================= -->
+<section id="glossario">
+  <div class="head"><div class="blk">Glossário</div><h2>Os termos da reforma em linguagem simples</h2>
+    <p>Na página, os termos sublinhados com pontilhado mostram a explicação ao passar o mouse ou tocar.</p></div>
+  <div class="card"><dl class="gloss" id="glList"></dl></div>
 </section>
 
 <div class="disc">Material didático elaborado a partir de uma apresentação sobre a reforma tributária no agro. As alíquotas e os exemplos são premissas ilustrativas. Antes de decidir, confira a legislação vigente (EC nº 132/2023, LC nº 214/2025 e Decreto nº 12.955/2026), os atos posteriores e a orientação do seu contador.</div>
@@ -588,12 +695,18 @@ function drawTL(){
 }
 
 /* ---------- não cumulatividade ---------- */
+const NC_U={sc_soja:{un:"saca",pl:"sacas de 60 kg",p:125},sc_milho:{un:"saca",pl:"sacas de 60 kg",p:55},arroba_boi:{un:"arroba",pl:"arrobas (@ de 15 kg)",p:300},arroba_alg:{un:"arroba",pl:"arrobas de pluma",p:130},rs:{un:"R$",pl:"",p:0}};
+$("ncU").addEventListener("change",()=>{const u=NC_U[$("ncU").value];if(u.p)$("ncPu").value=u.p;drawNC();});
 function drawNC(){
+  const U=NC_U[$("ncU").value], porQ=$("ncU").value!=="rs";
+  $("ncQf").hidden=$("ncPf").hidden=!porQ; $("ncV").readOnly=porQ;
+  if(porQ){$("ncQu").textContent=U.pl;$("ncPuu").textContent=`R$/${U.un}, sem tributo`;$("ncV").value=Math.round(val("ncQ")*val("ncPu")*100)/100;$("ncVs").textContent="calculado: quantidade × preço";}
+  else $("ncVs").textContent="valor sem tributo, R$";
   const c=val("ncC"),v=val("ncV"),a=val("ncA")/100,pago=$("ncP").checked;
   const cr=c*a,db=v*a,lib=pago?cr:0,saldo=Math.max(db-lib,0);
   $("ncSteps").innerHTML=`<div class="st4 cr"><span class="t">1 · Compra (crédito)</span><span class="v">${brl0(cr)}</span><span class="note">nota de ${brl0(c+cr)}</span></div>
    <div class="st4"><span class="t">2 · Trabalho no campo</span><span class="note">insumos viram produção</span></div>
-   <div class="st4 db"><span class="t">3 · Venda (débito)</span><span class="v">${brl0(db)}</span><span class="note">nota de ${brl0(v+db)}</span></div>
+   <div class="st4 db"><span class="t">3 · Venda (débito)</span><span class="v">${brl0(db)}</span><span class="note">nota de ${brl0(v+db)}${porQ&&val("ncQ")>0?` · ${brl(db/val("ncQ"))} por ${U.un}`:""}</span></div>
    <div class="st4 tot"><span class="t">4 · A recolher</span><span class="v">${brl0(saldo)}</span><span>${brl0(db)} − ${brl0(lib)}</span></div>`;
   const m=$("ncMsg");
   if(pago){m.className="verdict ok";m.innerHTML=`Crédito de ${brl0(cr)} liberado: o produtor recolhe ${brl0(saldo)}.<p>O IBS/CBS sai “por fora”: o comprador paga ${brl0(v+db)}, dos quais ${brl0(v)} são o preço da produção.</p>`;}
@@ -826,13 +939,147 @@ function drawOV(){
 }
 ["ovN","ovQ1","ovQ2"].forEach(id=>{$(id).addEventListener("input",drawOV);$(id).addEventListener("change",drawOV);});
 
+/* ---------- premissa única ---------- */
+const PREM={y2027:{g:10,nome:"2027"},plena:{g:28,nome:"plena"}};
+let PR="y2027";
+try{const x=localStorage.getItem("rt-prem");if(x&&(PREM[x]||x==="custom"))PR=x;const g=localStorage.getItem("rt-prem-g");if(g)$("prG").value=g;}catch(e){}
+const r2=x=>Math.round(x*100)/100;
+function premRates(){const g=PR==="custom"?Math.max(val("prG"),0):PREM[PR].g;return {g,agro:r2(g*0.4),arr:r2(g*0.3)};}
+function applyPrem(redraw=true){
+  const r=premRates();
+  ["ncA","dlA","grAc","grAv","opAl"].forEach(id=>$(id).value=r.agro);
+  ["ivA","inA"].forEach(id=>$(id).value=r.g); $("arA").value=r.arr;
+  const nome=PR==="y2027"?"2027":PR==="plena"?"plena":"personalizada";
+  document.querySelectorAll("[data-pt]").forEach(e=>{const t=e.dataset.pt;
+    e.textContent=t==="agro"?`% · premissa ${nome}: ${pct(r.agro)} no agro`:t==="geral"?`% · premissa ${nome}: ${pct(r.g)} (alíquota geral)`:t==="arr"?`% · ${pct(r.g)} com redução de 70% = ${pct(r.arr)}`:`% · premissa ${nome}; Anexo IX com redução de 60% (${pct(r.g)} → ${pct(r.agro)})`;});
+  $("prSeg").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.p===PR)));
+  $("prCustom").hidden=PR!=="custom";
+  $("prK").innerHTML=kpi(pct(r.agro),"produtos e insumos do agro (redução de 60%)","hl")+kpi(pct(r.g),"alíquota geral (máquinas, energia, outros)")+kpi(pct(r.arr),"arrendamento (redução de 70%)")+
+    kpi(PR==="y2027"?"CBS 2027":PR==="plena"?"IBS + CBS":"–",PR==="y2027"?"premissa didática dos slides: em 2027 vigora a CBS; o IBS fica em 0,05% + 0,05%":PR==="plena"?"alíquota de referência dos slides, com o IBS em vigor":"valor informado por você");
+  $("navPrem").textContent=`${pct(r.agro)} no agro`;
+  if(redraw){drawNC();drawDL();drawGR();drawIV();drawIN(false);drawAR();drawMC();}
+}
+$("prSeg").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{PR=b.dataset.p;try{localStorage.setItem("rt-prem",PR);}catch(e){}applyPrem();}));
+$("prG").addEventListener("input",()=>{try{localStorage.setItem("rt-prem-g",$("prG").value);}catch(e){}if(PR==="custom")applyPrem();});
+
+/* ---------- qual é o meu caso ---------- */
+const MC_IDS=["mcR","mcT","mcI","mcC","mcA","mcAn","mcE","mcK","mcM"];
+try{const x=JSON.parse(localStorage.getItem("rt-mc")||"null");if(x)MC_IDS.forEach(k=>{if(x[k]!=null)$(k).value=x[k];});}catch(e){}
+function mcState(){const R=val("mcR"),L=3600000;const integ=$("mcI").value==="1";
+  const contrib=!integ&&R>=L;return {R,L,integ,contrib,pf:$("mcT").value==="pf",coop:$("mcC").value==="1",aR:val("mcA"),aN:Math.floor(val("mcAn")),exp:$("mcE").value==="1",contr:$("mcK").value==="1",maq:$("mcM").value==="1"};}
+function drawMC(){
+  const c=mcState(),v=$("mcV"),r=premRates(),it=[];
+  if(c.integ){v.className="verdict ok";v.innerHTML=`Produtor integrado: pode optar por ser contribuinte, sem limite de valor.<p>A receita do contrato de integração não entra no limite. Sem a opção, a regra é não recolher IBS/CBS e não tomar crédito.</p>`;}
+  else if(c.R<c.L){v.className="verdict ok";v.innerHTML=`Em regra, não contribuinte do IBS e da CBS (pode optar).<p>Receita de ${brl0(c.R)}, abaixo de R$ 3,6 milhões: não recolhe IBS/CBS nas vendas e não toma crédito nas compras. O comprador do regime regular pode ter crédito presumido.</p>`;}
+  else if(c.R<=c.L*1.2){v.className="verdict w";v.innerHTML=`Contribuinte regular do IBS e da CBS.<p>Receita de ${brl0(c.R)}, até 20% acima do limite: se o excesso ocorrer durante o ano, passa a ser contribuinte em 1º de janeiro do ano seguinte. Terá débito e crédito, no regime da não cumulatividade.</p>`;}
+  else{v.className="verdict w";v.innerHTML=`Contribuinte regular do IBS e da CBS.<p>Receita de ${brl0(c.R)}, mais de 20% acima do limite: se o excesso ocorrer durante o ano, passa a ser contribuinte a partir do segundo mês seguinte. Terá débito e crédito, no regime da não cumulatividade.</p>`;}
+  const add=(t,h,l)=>it.push(`<li>${t}<a href="#${h}">${l||"ver →"}</a></li>`);
+  if(c.pf) add("Providencie o CNPJ do produtor rural, exigido a partir de 1º de janeiro de 2027. Ele não transforma você em pessoa jurídica.","agir");
+  if(!c.integ&&c.R>=c.L*0.8&&c.R<c.L) add(`Você está a ${brl0(c.L-c.R)} do limite: acompanhe a receita mês a mês e projete a safra.`,"contribuinte");
+  if(c.contrib){
+    add("Pague os fornecedores em dia: o crédito só é liberado com o débito deles extinto.","credito");
+    add("Reserve capital de giro para os tributos pagos nas compras antes das vendas.","giro");
+    add("Confira a apuração assistida todo mês: não se manifestar vale como confirmação.","painel");
+    add("Nas notas e propostas, separe o preço da produção do IBS/CBS (tributação por fora).","venda");
+  }else{
+    add("Compare os dois regimes no simulador do dilema e veja se vale optar por ser contribuinte.","dilema");
+    add("Atenção à exceção: em alguns casos, terá de pagar o imposto diferido da etapa anterior.","contribuinte");
+    add("Seu comprador pode ter crédito presumido: leve isso para a negociação do preço.","dilema");
+  }
+  add("Mapeie os insumos com diferimento e confira o NCM nas notas dos fornecedores.","gestinsumos");
+  if(c.contr) add("Revise os contratos com entrega em 2027 antes de entregar a produção: preço fixo, tributos e desconto no preço.","venda");
+  if(c.coop) add("Operações entre você e a cooperativa: alíquota zero nos atos cooperados (art. 271).","venda");
+  if(c.aR>0){const tr=c.aR>240000&&c.aN>3;add(tr?`Seu arrendamento é tributado: cerca de ${brl0(c.aR*r.arr/100)} por ano, com a premissa de ${pct(r.arr)}.`:`Seu arrendamento não é tributado nesta situação: exige receita acima de R$ 240 mil e mais de 3 imóveis.`,"arrendamento");}
+  if(c.exp) add("Exportação indireta: confira exportadora habilitada, fim específico, CFOP 5.501 ou 6.501 e o prazo de 180 dias.","exportacao");
+  if(c.maq) add(c.contrib?"Planeje a compra de máquinas: o crédito é integral e imediato; veja em quantos meses ele é compensado.":"Na compra de máquinas, verifique se o bem está listado para alíquota zero ao produtor não contribuinte.",c.contrib?"investimento":"insumos");
+  $("mcL").innerHTML=it.join("");
+  try{const o={};MC_IDS.forEach(k=>o[k]=$(k).value);localStorage.setItem("rt-mc",JSON.stringify(o));}catch(e){}
+}
+MC_IDS.forEach(id=>{$(id).addEventListener("input",drawMC);$(id).addEventListener("change",drawMC);});
+$("mcUse").addEventListener("click",()=>{const c=mcState();
+  $("enR").value=c.R;$("enP").value=0;$("enI").value=0;$("enB").value=0;drawEN();
+  $("arR").value=c.aR;$("arN").value=c.aN;drawAR();
+  $("ivT").value=c.contrib?"trib":"zero";drawIV();
+  location.hash="contribuinte";});
+
+/* ---------- receita pela produção ---------- */
+const RC=[["rcSha","rcSpr","rcSp","rcSr"],["rcMha","rcMpr","rcMp","rcMr"],["rcAha","rcApr","rcAp","rcAr"],["rcBc","rcBpr","rcBp","rcBr"]];
+function drawRC(){let t=0;RC.forEach(([q,pr,p,o])=>{const v=val(q)*val(pr)*val(p);t+=v;$(o).textContent=brl0(v);});$("rcT").textContent=brl0(t);return t;}
+RC.flat().filter(id=>!/r$/.test(id)).forEach(id=>$(id).addEventListener("input",drawRC));
+$("rcUse").addEventListener("click",()=>{$("mcR").value=Math.round(drawRC());$("mcCalc").open=false;drawMC();});
+
+/* ---------- glossário ---------- */
+const GL=[
+ ["crédito presumido","Crédito que o comprador do regime regular pode descontar ao comprar de um produtor não contribuinte, mesmo sem tributo destacado na nota. Exige documento fiscal e pagamento confirmado."],
+ ["não cumulatividade","Regra pela qual o tributo pago nas compras vira crédito e é descontado do tributo devido nas vendas. Só se paga sobre o valor que você acrescenta."],
+ ["apuração assistida","Cálculo do tributo do mês feito pelo sistema do governo a partir das notas. O contribuinte deve conferir e se manifestar no prazo; o silêncio vale como confirmação."],
+ ["saldo credor","Crédito que sobrou depois de descontar todos os débitos do período. Fica para os meses seguintes; não é dinheiro em conta."],
+ ["liquidação financeira","Momento em que o pagamento da operação é processado. O tributo pode ser recolhido ali mesmo, separado automaticamente do valor pago."],
+ ["por fora","O IBS e a CBS são somados ao preço, e não embutidos nele. Preço da produção + tributo = valor total da nota."],
+ ["alíquota zero","O produto está sujeito ao tributo, mas a alíquota aplicada é 0%. Na prática, não há tributo a pagar naquela operação."],
+ ["diferimento","Adiamento do pagamento do tributo para uma etapa seguinte. Na compra de insumos com diferimento, o IBS/CBS não sai do caixa naquele momento."],
+ ["Anexo IX","Lista de insumos agropecuários da LC nº 214/2025 com tratamento favorecido (redução de alíquota e diferimento): fertilizantes, defensivos, sementes, rações, entre outros."],
+ ["contribuinte","Quem recolhe IBS e CBS nas vendas e pode aproveitar créditos nas compras. Para o produtor rural, depende da receita anual (limite de R$ 3,6 milhões) ou da opção."],
+ ["débito","Valor de IBS/CBS gerado na venda. É o tributo que o vendedor deve, antes de descontar os créditos."],
+ ["NCM","Nomenclatura Comum do Mercosul: código de 8 dígitos que classifica o produto na nota fiscal. É ele que define qual alíquota e qual tratamento se aplicam."],
+ ["CFOP","Código Fiscal de Operações e Prestações: indica na nota o tipo de operação, por exemplo remessa com fim específico de exportação (5.501 ou 6.501)."],
+ ["IBS","Imposto sobre Bens e Serviços, de estados e municípios. Substitui o ICMS e o ISS até 2033."],
+ ["CBS","Contribuição sobre Bens e Serviços, federal. Substitui PIS e Cofins a partir de 2027."],
+ ["in natura","Produto que manteve suas características físico-químicas, sensoriais e de composição originais, sem processos que alterem suas características naturais."]
+];
+$("glList").innerHTML=GL.slice().sort((a,b)=>a[0].localeCompare(b[0],"pt-BR")).map(([t,d])=>`<div><dt>${t}</dt><dd>${d}</dd></div>`).join("");
+(function wrapTerms(){
+  const roots=[...document.querySelectorAll("section")].filter(x=>!["glossario","premissa"].includes(x.id));
+  const esc2=t=>t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  roots.forEach(sec=>{
+    const used=new Set();
+    GL.forEach(([term,def],gi)=>{
+      if(used.has(term))return;
+      const re=new RegExp("(^|[^\\p{L}])("+esc2(term)+")(?![\\p{L}])","iu");
+      const w=document.createTreeWalker(sec,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const pa=n.parentElement;if(!pa||pa.closest("h1,h2,h3,button,select,option,label,summary,a,svg,.gl,.law,script,style,input,thead,.mk,.blk,.eyebrow"))return NodeFilter.FILTER_REJECT;return re.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP;}});
+      const n=w.nextNode(); if(!n)return;
+      const m=n.nodeValue.match(re); const i=m.index+m[1].length;
+      const r=n.splitText(i); r.splitText(m[2].length);
+      const sp=document.createElement("span"); sp.className="gl"; sp.tabIndex=0; sp.dataset.g=gi; sp.textContent=r.nodeValue; r.replaceWith(sp);
+      used.add(term);
+    });
+  });
+})();
+const glTip=document.createElement("div");glTip.id="glTip";glTip.hidden=true;glTip.setAttribute("role","tooltip");document.body.appendChild(glTip);
+let glCur=null;
+function glShow(el){const g=GL[+el.dataset.g];glTip.innerHTML=`<b>${g[0]}</b>${g[1]}`;glTip.hidden=false;glCur=el;
+  const r=el.getBoundingClientRect(),w=Math.min(300,innerWidth-24);glTip.style.maxWidth=w+"px";
+  let x=Math.min(Math.max(12,r.left),innerWidth-w-12),y=r.bottom+8; if(y+glTip.offsetHeight>innerHeight-8)y=r.top-glTip.offsetHeight-8;
+  glTip.style.left=x+"px";glTip.style.top=Math.max(8,y)+"px";}
+function glHide(){glTip.hidden=true;glCur=null;}
+document.addEventListener("pointerover",e=>{const t=e.target.closest&&e.target.closest(".gl");if(t&&e.pointerType==="mouse")glShow(t);});
+document.addEventListener("pointerout",e=>{const t=e.target.closest&&e.target.closest(".gl");if(t&&e.pointerType==="mouse")glHide();});
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest(".gl");if(t){if(glCur===t)glHide();else glShow(t);}else if(!e.target.closest("#glTip"))glHide();});
+document.addEventListener("focusin",e=>{const t=e.target;if(t.classList&&t.classList.contains("gl")&&t.matches(":focus-visible"))glShow(t);});
+document.addEventListener("focusout",e=>{if(e.target.classList&&e.target.classList.contains("gl"))glHide();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")glHide();});
+addEventListener("scroll",()=>{if(glCur)glShow(glCur);},{passive:true});
+
+/* ---------- seções recolhíveis no celular ---------- */
+const COL=["transicao","agir","credito","contribuinte","arrendamento","insumos","venda","exportacao","gestao","pratica","preparado","glossario"];
+COL.forEach(id=>{const sec=$(id),head=sec.querySelector(":scope > .head");if(!head)return;
+  const body=document.createElement("div");body.className="sbody";
+  [...sec.children].filter(c=>c!==head).forEach(c=>body.appendChild(c));sec.appendChild(body);
+  const b=document.createElement("button");b.type="button";b.className="sbtn";b.setAttribute("aria-expanded","false");b.textContent="Abrir esta seção";
+  b.addEventListener("click",()=>{const open=sec.classList.toggle("col");b.setAttribute("aria-expanded",String(!open));b.textContent=open?"Abrir esta seção":"Fechar esta seção";});
+  head.appendChild(b);sec.classList.add("col");});
+function abrirAlvo(){const h=decodeURIComponent(location.hash.slice(1));if(!h)return;const el=document.getElementById(h);if(!el)return;
+  const sec=el.closest("section.col");if(sec){sec.classList.remove("col");const b=sec.querySelector(".sbtn");if(b){b.setAttribute("aria-expanded","true");b.textContent="Fechar esta seção";}}
+  requestAnimationFrame(()=>el.scrollIntoView({block:"start"}));}
+addEventListener("hashchange",abrirAlvo);
+
 /* ---------- ligação ---------- */
-["ncC","ncV","ncA","ncP"].forEach(id=>{$(id).addEventListener("input",drawNC);$(id).addEventListener("change",drawNC);});
+["ncC","ncV","ncA","ncP","ncQ","ncPu"].forEach(id=>{$(id).addEventListener("input",drawNC);$(id).addEventListener("change",drawNC);});
 ["enR","enP","enI","enB","enL"].forEach(id=>$(id).addEventListener("input",drawEN));
 ["ivV","ivT","ivA","ivD","ivC"].forEach(id=>$(id).addEventListener("input",drawIV));
 ["grC","grV","grAc","grAv","grD","grP"].forEach(id=>$(id).addEventListener("input",drawGR));
 $("inA").addEventListener("input",()=>drawIN(false));
-drawTL();drawNC();drawEN();drawDL();drawAR();drawFunil();drawOV();drawIV();drawGR();drawOP();drawIN(true);
+applyPrem(false);drawTL();drawNC();drawEN();drawDL();drawAR();drawFunil();drawOV();drawIV();drawGR();drawOP();drawIN(true);drawRC();drawMC();abrirAlvo();
 })();
 </script>
 </body>

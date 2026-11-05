@@ -4,6 +4,22 @@ Página de estudo e simulação sobre o IBS e a CBS para o produtor rural, const
 da apresentação de José Cristovão (Sistema Famato) sobre a reforma tributária no agro. Abra [`index.html`](index.html) no navegador;
 não é preciso instalar nada.
 
+## Para o produtor começar
+
+- **Resumo em 1 minuto:** as cinco mensagens principais, com links para as seções.
+- **Qual é o meu caso?:** questionário (receita, pessoa física ou jurídica, integrado, cooperado,
+  arrendamento, exportação, contratos de 2027 e máquinas) que indica o enquadramento provável e monta um
+  roteiro de providências. A receita pode ser calculada pela produção (hectares × sacas por hectare ×
+  preço, arrobas de algodão e de boi), e um botão leva os dados para os simuladores.
+- **Premissa única de alíquota:** um seletor aplica a mesma premissa a todos os simuladores. 2027: 4% no
+  agro e 10% geral (premissa didática dos slides); plena: 11,2% no agro e 28% geral; ou personalizada.
+  Insumos do Anexo IX a 40% da alíquota geral e arrendamento a 30%.
+- **Unidades do produtor:** o simulador de crédito aceita a venda em sacas ou arrobas e mostra o tributo
+  por unidade.
+- **Glossário:** termos técnicos sublinhados mostram a explicação ao passar o mouse ou tocar; glossário
+  completo no fim da página.
+- **Celular:** as seções longas começam recolhidas; os links do menu abrem a seção certa.
+
 ## Conteúdo
 
 - **Alíquotas:** alíquota geral de referência de 28% (CBS 10% + IBS estadual 14% + IBS municipal 4%)
