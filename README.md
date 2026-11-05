@@ -13,6 +13,8 @@ não é preciso instalar nada.
   de 2027; tributação “por fora”.
 - **Crédito:** não cumulatividade com simulador, crédito condicionado ao pagamento do fornecedor
   (art. 47) e apuração assistida (art. 46).
+- **Formas de extinção dos débitos da CBS:** compensação, pagamento, recolhimento na liquidação
+  financeira, recolhimento pelo adquirente e pagamento pelo responsável (art. 26 do Regulamento).
 - **Contribuinte:** limite de R$ 3,6 milhões, o que entra e o que não entra na receita, integração e
   participação societária, regra dos 20% de excesso, com simulador; o dilema do regime e o crédito
   presumido do comprador.
@@ -23,7 +25,9 @@ não é preciso instalar nada.
 - **Venda e contratos:** separação entre preço e tributo, fato gerador, atos cooperados, cláusulas de
   risco e roteiro de revisão de contratos.
 - **Exportação:** exportação indireta via comercial exportadora, prazo de 180 dias e CFOP.
-- **Classificação fiscal:** o caso dos ovos (0407.2 com alíquota zero, 0407.1 com 40%, 0408.9).
+- **A teoria contra a prática:** os desafios da “reforma simplificada”, a pergunta do leite (Anexo I,
+  cesta básica) e um classificador do caso do ovo (0407.2 com alíquota zero, 0407.1 com 40% e 0408.9,
+  com o critério de produto in natura do art. 212, § 2º, do Decreto nº 12.955/2026).
 - **O produtor está preparado?** Resultados da autorregularização (Receita Federal).
 
 ## Gestão tributária da fazenda
